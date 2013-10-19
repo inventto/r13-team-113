@@ -8,6 +8,9 @@ $(document).ready ->
     Pixastic.process(document.getElementById("testimage"), "invert")
   $(".desaturate").on 'click', (e) ->
     Pixastic.process(document.getElementById("testimage"), "desaturate")
+  $(".slider").slider({orientation: "horizontal", value: 100})
+  $(".slider").on "slidechange", ( event, ui ) ->
+    $("#testimage").fadeTo(100, ui.value / 100) 
 
   dataURLtoBlob = (dataURL) ->
     binary = atob(dataURL.split(',')[1])
@@ -28,4 +31,3 @@ $(document).ready ->
        contentType: false
        success: (data) ->
          console.log("enviou imagem e recebeu ", data)
-
