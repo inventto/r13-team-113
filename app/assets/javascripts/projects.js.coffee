@@ -39,8 +39,11 @@ $(document).ready ->
 
   snapshot = ->
     if (localMediaStream)
+      console.log video
       ctx.drawImage(video, 0, 0)
-      document.querySelector('img').src = canvas.toDataURL('image/webp')
+      blob =  canvas.toDataURL('image/webp')
+      document.querySelector('img').src = blob
+      uploadImageFromBlob blob
 
   $("#snapshot-button").on "click", snapshot
   video.addEventListener('click', snapshot, false)
@@ -51,15 +54,14 @@ $(document).ready ->
   onFailSoHard = -> {}
   navigator.getUserMedia video: true, sourceStream, onFailSoHard
 
-  uploadImageFromCanvas = (canvas) ->
-     file = canvas.getContext()
+  uploadImageFromBlob = (blob) ->
      fd = new FormData()
-     fd.append("image", file)
+     fd.append("image", blob)
      $.ajax
-       url: window.location.url.toString()+"/images"
-       type: "POST"
-       data: fd
-       processData: false
-       contentType: false
+       url: window.location.pathname.replace('edit','add_image'),
+       data: fd,
+       type: 'POST',
+       processData: false,
+       contentType: false,
        success: (data) ->
          console.log("enviou imagem e recebeu ", data)
