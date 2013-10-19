@@ -50,15 +50,14 @@ $(document).ready ->
       diffW = video.clientWidth - canvas.width
 
       ctx.drawImage(video, -diffW / 2, -diffH / 2, video.clientWidth, video.clientHeight)
-      blob =  canvas.toDataURL('image/webp')
       thumb_ctx.drawImage(video, -diffW / 2, -diffH / 2, 128, 128)
+      blob =  canvas.toDataURL('image/webp')
       thumb_blob = thumb_canvas.toDataURL('image/webp')
       $('img#captured-image').attr 'src', blob
       $('img#baseimage').attr 'src', blob
+      $('img#thumbimage').attr 'src', thumb_blob
 
       uploadImageFromBlob blob, thumb_blob
-
-      $('img#thumbimage').attr 'src', thumb_blob
 
       $('img#thumbimage').show()
       $('img#captured-image').show()
