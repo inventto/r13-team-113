@@ -34,13 +34,17 @@ $(document).ready ->
   navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
   video = $('#capture video')[0]
   canvas = $('#capture canvas.camera')[0]
+  canvas.width = 500
+  canvas.height = 500
   ctx = canvas.getContext('2d')
   localMediaStream = null
 
   snapshot = ->
     if (localMediaStream)
       console.log video
-      ctx.drawImage(video, 0, 0)
+      diffH = video.clientHeight - canvas.height
+      diffW = video.clientWidth - canvas.width
+      ctx.drawImage(video, -diffW / 2, -diffH / 2, video.clientWidth, video.clientHeight)
       blob =  canvas.toDataURL('image/webp')
       $('img#captured-image')[0].src = blob
       $('img#baseimage')[0].src = blob

@@ -64,10 +64,19 @@ body {
 #capture video { 
 	margin: 0 -87px;
 }
-#capture video, #capture canvas, #base-image-wrapper img { 
+/*
+#captured-image { 
+	margin: 0 -83px;
+}
+*/
+#capture canvas, #base-image-wrapper img { 
 	display: block;
-	min-height: 500px;
-	min-width: 500px;
+	height: 500px;
+	width: 500px;
+}
+#capture video {
+	display: block;
+	height: 500px;
 }
 #controls {
 	text-align: center;
