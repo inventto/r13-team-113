@@ -96,7 +96,7 @@ $(document).ready ->
       $(video).hide()
       load_thumb_effects()
 
-  firstPic = true
+  window.firstPic = true
   pic = false
   $("#snapshot-button").on "click", ->
     if pic
@@ -104,8 +104,8 @@ $(document).ready ->
       snapshot()
       $('#base-image').show()
     else
-      if firstPic
-        firstPic = false
+      if window.firstPic
+        window.firstPic = false
         $('#base-image').hide()
       this.src = "/images/snapbutton.png"
       $('img#captured-image').hide()
