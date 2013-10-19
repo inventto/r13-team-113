@@ -64,6 +64,7 @@ class ProjectsController < ApplicationController
   end
   # POST /projects/1/add_image
   def add_image
+    @project.mkdir_images_dir
     img_name = "#{ "%06d" % (@project.images.count + 1).to_s}.png"
     image_file = File.join(@project.dir, img_name)
     File.open(image_file, 'wb') do |f|
@@ -75,14 +76,11 @@ class ProjectsController < ApplicationController
     end
     @image = Image.create path: image_file, project: @project
     respond_to do |format|
-      format.json { render json: @image }
+      format.json { render json: @image.to_json(:methods => [:external_path, :external_thumb_path]) }
     end
   end
   def export
-    @project.render_video!
-    respond_to do |format|
-      format.json { render json: @project }
-    end
+    send_file @project.render_video!
   end
 
   private

@@ -3,18 +3,14 @@
     <%= render :partial => 'image' %>
   </div>
   <div id="controls" class="control-group">
-    <%= image_tag("configbutton.png", id: "config-button", class: @project.id ? "" : "active", title: "Configuration") %>
-    <%= image_tag("filterbutton.png", id: "images-button", class: @project.id ? "active" : "", title: "List images") %>
-    |
-    <%= image_tag("downloadbutton.png", id: "download-button", title: "Download") %>
-    |
-    <%= image_tag("uploadbutton.png", id: "upload-button", title: "Upload image") %>
-    <%= image_tag("plussnapbutton.png", id: "snapshot-button", title: "Snapshot") %>
-    |
-    <%= image_tag("savebutton.png", id: "save-button", title: "Save Project") %> 
-    &nbsp; &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; &nbsp; 
     <%= image_tag("newprjbutton.png", id: "new-button", title: "New Project") %>
     <%= image_tag("listbutton.png", id: "list-button", title: "List Projects") %>
+    |
+    <%= image_tag("configbutton.png", id: "config-button", class: @project.id ? "" : "active", title: "Configuration") %>
+    <%= image_tag("plussnapbutton.png", id: "snapshot-button", title: "Snapshot") %>
+    <%= image_tag("filterbutton.png", id: "images-button", class: @project.id ? "active" : "", title: "List images") %>
+    <%= image_tag("savebutton.png", id: "save-button", title: "Save Project") %> 
+    <%= image_tag("downloadbutton.png", id: "download-button", title: "Download") %>
   </div>
   <div id="context-container">
     <div id="images-context" style="display: <%= @project.id ? "block" : "none" %>">

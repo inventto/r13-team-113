@@ -42,7 +42,7 @@ $(document).ready ->
     window.location = "/projects"
 
   $('#download-button').on 'click', (e) ->
-    window.location = "/export/" + $('#project_url').val() + ".mp4";
+    window.location = window.location.pathname.replace('edit','export')
 
   $('#images-button').on 'click', (e) ->
     if $(e.currentTarget).hasClass('active')
@@ -53,6 +53,23 @@ $(document).ready ->
       $("#controls img").removeClass('active')
       $(this).addClass('active')
 
+   $.contextMenu
+     selector: '#images-context img'
+     trigger: 'hover'
+     delay: 100
+     autoHide: true
+     callback: (key, options) ->
+       img = options.$trigger[0]
+       if key == "use_as_base_image"
+         $('#base-image').attr 'src', $(img).attr('data-content')
+       else if key == "delete"
+         img.remove()
+         alert('TODO: call delete -> ' + $(img).attr('data-id'))
+     items:
+       "use_as_base_image":
+         name: "Use as Base Image"
+       "delete":
+         name: "Delete"
 
 
   load_thumb_effects = ->
@@ -71,6 +88,7 @@ $(document).ready ->
   active_context = (context) ->
     $('#context-container > div').hide(100)
     $('#'+context).show(100)
+    $('body').scrollTo('#' + context)
 
   window.URL = window.URL || window.webkitURL
   navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
@@ -109,6 +127,8 @@ $(document).ready ->
       $('img#captured-image').show()
       $(video).hide()
       load_thumb_effects()
+      $('body').css({opacity: 0})
+      $('body').animate({opacity: 1}, 300 )
 
   window.firstPic = true
   pic = false
@@ -146,4 +166,5 @@ $(document).ready ->
        processData: false,
        contentType: false,
        success: (data) ->
-         console.log("enviou imagem e recebeu ", data)
+         console.log("enviou imagem e recebeu ", data.external_path)
+         $('#images-context').append('&nbsp;<img class="image-thumb" src="' +data.external_thumb_path + '" data-content="' + data.external_path + '" data-id="' + data.id +  '" />')

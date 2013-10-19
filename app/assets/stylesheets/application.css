@@ -11,6 +11,7 @@
  *= require_self
  *= require_tree .
  *= require jquery.ui.all
+ *= require jquery.contextMenu
  */
 html {
 	background-image: url(/images/background.png);
