@@ -16,8 +16,9 @@ html {
 	background-image: url(/images/background.png);
 }
 body {
-	width: 1000px;
+	width: 1360px;
 	margin: 0 auto ! important;
+	background: transparent ! important;
 }
 .brand {
 	background: url(/images/brand.png) no-repeat;
@@ -44,7 +45,11 @@ body {
 	margin: 6px 3px;
 }
 #capture {
+	margin: 0 10px 0 107px;
 	height: 500px;
+	width: 500px;
+	float: left;
+	border: 10px solid black;
 }
 #base-image-wrapper, #camera-image {
 	height: 500px;
@@ -52,7 +57,6 @@ body {
 	overflow: hidden;
 }
 #base-image-wrapper, #camera-image { 
-	margin: 0 107px;
 	position: absolute;
 }
 #base-image-wrapper { 
@@ -79,5 +83,32 @@ body {
 	height: 500px;
 }
 #controls {
+	clear: both;
 	text-align: center;
+}
+#controls img {
+	margin: 0 15px;
+}
+#opacity-controls {
+	float: left;
+	height: 500px;
+	width: 100px;
+	border: 2px solid white;
+	margin: 0 30px;
+	border-radius: 10px;
+	--moz-border-radius: 10px;
+	--webkit-border-radius: 10px;
+	text-align: center;
+}
+#slider-opacity {
+	float:left;
+	height: 400px;
+	margin: 10px 40px;
+}
+#context-container {
+	background-color: rgba(0,0,0,0.5);
+	padding: 30px 0;
+}
+img.active {
+	background: url(/images/isactive.png) no-repeat;
 }
