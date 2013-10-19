@@ -26,7 +26,8 @@ $(document).ready ->
     Pixastic.process(document.getElementById("baseimage"), "transparent")
   $(".transparent2").on 'click', (e) ->
     Pixastic.process(document.getElementById("baseimage"), "transparent", {white: true})
-  $(".slider").slider({orientation: "horizontal", value: 100})
+  $(".slider").slider({orientation: "horizontal", value: 50})
+  $("#baseimage").fadeTo(200, 0.5)
   $(".slider").on "slidechange", ( event, ui ) ->
     $("#baseimage").fadeTo(100, ui.value / 100)
 
