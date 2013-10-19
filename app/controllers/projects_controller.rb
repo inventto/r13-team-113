@@ -64,7 +64,7 @@ class ProjectsController < ApplicationController
   end
   # POST /projects/1/add_image
   def add_image
-    img_name = "#{(@project.images.count + 1).to_s % "%06d"}.png"
+    img_name = "#{ "%06d" % (@project.images.count + 1).to_s}.png"
     image_file = File.join(@project.dir, img_name)
     File.open(image_file, 'wb') do |f|
       f.write(decode_from_param :image)
