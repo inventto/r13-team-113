@@ -13,5 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
+//= require pixastic/pixastic.core
+//= require pixastic/actions/invert
+//= require pixastic/actions/desaturate
 //= require turbolinks
 //= require_tree .
