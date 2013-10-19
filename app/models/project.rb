@@ -5,6 +5,7 @@ class Project < ActiveRecord::Base
   has_many :images, after_add: :set_imagebase_first
   belongs_to :imagebase, class_name: 'Image'
   after_create :mkdir_images_dir
+  
   def mkdir_images_dir
     [dir, thumbs_dir].each do |_dir|
       Dir.mkdir _dir if not Dir.exists? _dir
@@ -21,5 +22,11 @@ class Project < ActiveRecord::Base
       self.imagebase = images.first
       self.save
     end
+  end
+  def video_output_path
+    File.join(dir, "#{url}.mp4")
+  end
+  def render_video!
+    `ffmpeg -r 1 -pattern_type glob -i '#{File.join(dir, "*.png")}' -c:v libx264 -pix_fmt yuv420p #{video_output_path}` 
   end
 end
