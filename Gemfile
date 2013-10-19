@@ -18,6 +18,7 @@ gem 'twitter-bootstrap-rails'
 gem 'libv8'
 gem 'therubyracer'
 gem "less-rails"
+gem 'capistrano'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
