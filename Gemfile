@@ -50,6 +50,7 @@ end
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 gem "paperclip"
+gem 'google-analytics-rails'
 group :development, :test do
   gem 'turn'
   gem 'pry'
