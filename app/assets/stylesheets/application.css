@@ -11,3 +11,12 @@
  *= require_self
  *= require_tree .
  */
+body {
+	width: 1000px;
+	margin: 0 auto ! important;
+	background: url(images/);
+}
+
+.brand {
+	background: url(/images/brand.png);
+}
