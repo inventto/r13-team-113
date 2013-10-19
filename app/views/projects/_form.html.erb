@@ -4,12 +4,17 @@
   </div>
   <div id="controls" class="control-group">
     <%= image_tag("uploadbutton.png", id: "upload-button") %>
-    <%= image_tag("filterbutton.png", id: "filter-button") %>
+    <%= image_tag("filterbutton.png", id: "filter-button"), class: "active" %>
     <%= image_tag("plussnapbutton.png", id: "snapshot-button") %>
-    <%= image_tag("excldbutton.png", id: "excld-button") %>
     <%= image_tag("configbutton.png", id: "config-button") %>
+    <%= image_tag("downloadbutton.png", id: "download-button") %>
   </div>
   <div id="context-container">
+    <div id="images-context">
+      <% @project.images.each do |image| %>
+        <img class="image-thumb" src="<%= image.external_thumb_path %>" data-content="<%= image.external_path %>" />
+      <% end %>
+    </div>
     <div id="config-context" style="display:none">
       <div class="control-group">
         <%= f.label :name, :class => 'control-label' %>
