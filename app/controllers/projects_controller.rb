@@ -81,7 +81,7 @@ class ProjectsController < ApplicationController
 
   private
     def decode_from_param name
-      Base64.decode64(params[name]['data:image/png;base64,'.length.. -1])
+      Base64.decode64(params[name][params[name].index(",").. -1])
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_project
