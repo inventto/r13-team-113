@@ -2,6 +2,8 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).ready ->
+  Pixastic.init()
+
   $(".revert").on 'click', (e) ->
     Pixastic.revert(document.getElementById("base-image"))
   $(".invert").on 'click', (e) ->
@@ -155,4 +157,5 @@ $(document).ready ->
        processData: false,
        contentType: false,
        success: (data) ->
-         console.log("enviou imagem e recebeu ", data)
+         console.log("enviou imagem e recebeu ", data.external_path)
+         $('#images-context').append('<img class="image-thumb" src="' +data.external_thumb_path + '" data-content="' + data.external_path + '" data-id="' + data.id +  '" />')

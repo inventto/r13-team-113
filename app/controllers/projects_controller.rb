@@ -75,7 +75,7 @@ class ProjectsController < ApplicationController
     end
     @image = Image.create path: image_file, project: @project
     respond_to do |format|
-      format.json { render json: @image }
+      format.json { render json: @image.to_json(:methods => [:external_path, :external_thumb_path]) }
     end
   end
   def export
