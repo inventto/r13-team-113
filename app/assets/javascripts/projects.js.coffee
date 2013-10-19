@@ -40,9 +40,19 @@ $(document).ready ->
   snapshot = ->
     if (localMediaStream)
       ctx.drawImage(video, 0, 0)
-      document.querySelector('img').src = canvas.toDataURL('image/webp')
+      $('img#captured-image')[0].src = canvas.toDataURL('image/webp')
+      $('img#baseimage')[0].src = canvas.toDataURL('image/webp')
+      $('img#captured-image').show()
+      $(video).hide()
 
-  $("#snapshot-button").on "click", snapshot
+  pic = true
+  $("#snapshot-button").on "click", ->
+    if pic
+      snapshot()
+    else
+      $('img#captured-image').hide()
+      $(video).show()
+    pic = !pic
   video.addEventListener('click', snapshot, false)
   sourceStream = (stream) ->
     video.src = window.URL.createObjectURL(stream)

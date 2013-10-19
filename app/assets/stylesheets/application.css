@@ -43,8 +43,32 @@ body {
 	float: left;
 	margin: 6px 3px;
 }
-#base-image-wrapper, #capture video, #capture canvas {
-  width:500px;
-  height:500px;
-  margin:0 auto;
+#capture {
+	height: 500px;
+}
+#base-image-wrapper, #camera-image {
+	height: 500px;
+	width: 500px;
+	overflow: hidden;
+}
+#base-image-wrapper, #camera-image { 
+	margin: 0 107px;
+	position: absolute;
+}
+#base-image-wrapper { 
+	z-index: 1;
+}
+#camera-image { 
+	background-color: #eee;
+}
+#capture video { 
+	margin: 0 -87px;
+}
+#capture video, #capture canvas, #base-image-wrapper img { 
+	display: block;
+	min-height: 500px;
+	min-width: 500px;
+}
+#controls {
+	text-align: center;
 }

@@ -15,17 +15,21 @@
 </div>
 <h4>Base Image</h4>
 <div id="capture">
-  <div id="camera-image">
-    <video autoplay></video>
-    <canvas class="camera" style="display:none">
-    </canvas>
-  </div>
   <div id="base-image-wrapper">
     <% if @project.image_base %>
       <%= image_tag @project.image_base.url(:large), id: "baseimage" %>
-    <% else %>)
-      <%= image_tag("snapbutton.png", id: "snapshot-button") %>
-     <% end %>
+    <% else %>
+      <%= image_tag "/images/default.png", id: "baseimage" %>
+    <% end %>
   </div>
+  <div id="camera-image">
+    <video autoplay></video>
+    <canvas class="camera" style="display:none"></canvas>
+    <img id="captured-image" style="display:none"/>
+  </div>
+</div>
+<div id="controls">
+  <%= image_tag("snapbutton.png", id: "snapshot-button") %>
+</div>
 <h4>Transparency</h4>
 <div class="slider"></div>
