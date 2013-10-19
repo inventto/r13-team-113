@@ -1,7 +1,7 @@
 
 require 'base64'
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :add_image]
 
   # GET /projects
   # GET /projects.json
@@ -62,15 +62,19 @@ class ProjectsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  # POST /projects/1/add_image
   def add_image
-    File.open("#{Rails.root}/public/#{params[:project_id]}/#{Time.now.to_i}.png", 'wb') do |f|
+    @image = Image.new path: File.join(@project.directory, "#{Time.now.to_i}.png"), project: @project
+    File.open(@image.path,'wb') do |f|
       f.write(params[:image].read)
     end
+    @image.save
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
+      puts "set project from ", params.inspect
       @project = if params[:id]
                    Project.find(params[:id])
                  elsif params[:unique_url]

@@ -50,4 +50,10 @@ class ProjectsControllerTest < ActionController::TestCase
 
     assert_redirected_to projects_path
   end
+  test "should allow upload images to project" do
+     image = fixture_file_upload('brand.png','image/png')
+     assert_difference('Image.count', 1) do
+       post :add_image, image: image, id: Project.first.id
+     end
+  end
 end
