@@ -43,8 +43,7 @@ body {
 	border: 2px solid white;
 	padding: 10px 15px;
 	margin: 0 25px;
-	--moz-border-radius: 10px;
-	--webkit-border-radius: 10px;
+	border-radius: 10px;
 }
 #base-image, #effects {
 	text-align: center;
@@ -106,8 +105,6 @@ body {
 	margin: 0 25px;
 	border: 2px solid white;
 	border-radius: 10px;
-	--moz-border-radius: 10px;
-	--webkit-border-radius: 10px;
 	text-align: center;
 	padding: 10px;
 }
