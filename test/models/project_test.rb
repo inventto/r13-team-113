@@ -18,4 +18,8 @@ class ProjectTest < ActiveSupport::TestCase
     project = Project.create url: '  hahahah '
     assert ! project.errors[:url].empty?
   end
+  test "should create the uploads directory for images" do
+    project = ONE_PROJECT.call
+    assert Dir.exists?(project.directory)
+  end
 end

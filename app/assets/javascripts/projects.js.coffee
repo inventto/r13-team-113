@@ -9,4 +9,23 @@ $(document).ready ->
   $(".desaturate").on 'click', (e) ->
     Pixastic.process(document.getElementById("testimage"), "desaturate")
 
-  
+  dataURLtoBlob = (dataURL) ->
+    binary = atob(dataURL.split(',')[1])
+    array = []
+    for i in binary.length
+      array.push binary.charCodeAt(i)
+    new Blob([new Uint8Array(array)], type: 'image/png')
+
+  uploadImageFromUrl = (url) ->
+     file= dataURLtoBlob(url)
+     fd = new FormData()
+     fd.append("image", file)
+     $.ajax
+       url: window.location.url.toString()+"/images"
+       type: "POST"
+       data: fd
+       processData: false
+       contentType: false
+       success: (data) ->
+         console.log("enviou imagem e recebeu ", data)
+

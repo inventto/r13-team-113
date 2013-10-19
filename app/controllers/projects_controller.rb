@@ -1,3 +1,5 @@
+
+require 'base64'
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
 
@@ -58,6 +60,11 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to projects_url }
       format.json { head :no_content }
+    end
+  end
+  def add_image
+    File.open("#{Rails.root}/public/#{params[:project_id]}/#{Time.now.to_i}.png", 'wb') do |f|
+      f.write(params[:image].read)
     end
   end
 
