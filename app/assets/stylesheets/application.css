@@ -11,3 +11,20 @@
  *= require_self
  *= require_tree .
  */
+html {
+	background-image: url(/images/background.png);
+}
+body {
+	width: 1000px;
+	margin: 0 auto ! important;
+}
+
+.brand {
+	background: url(/images/brand.png) no-repeat;
+	height: 65px;
+	width: 320px;
+	text-indent: -9000px;
+}
+.brand:hover {
+	background-color: transparent ! important;
+}
