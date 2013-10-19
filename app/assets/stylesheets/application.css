@@ -114,11 +114,16 @@ body {
 	height: 400px;
 	margin: 10px 40px;
 }
-#context-container {
-	background-color: rgba(0,0,0,0.3);
-	padding: 30px 0;
+#context-container > div {
+	padding: 30px 23px;
 }
-img.active, img:hover {
+#context-container > div#config-context {
+	background-color: rgba(0,0,0,0.3);
+}
+#context-container > div#images-context {
+	background-color: rgba(255,128,20,0.3);
+}
+#controls img.active {
 	background: url(/images/isselected.png) no-repeat;
 }
 .form-actions {
@@ -149,7 +154,7 @@ h1 {
 	width: 90px;
 }
 #images-context img {
-	margin: 7px;
+	margin: 4px;
 	height: 128px;
 	width: 128px;
 }

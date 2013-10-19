@@ -34,12 +34,23 @@ $(document).ready ->
 
   $('#config-button').on 'click', (e) ->
     if $(e.currentTarget).hasClass('active')
+      $("#controls img").removeClass('active')
       $('#context-container > div').hide(100)
-      $(this).removeClass('active')
     else
       active_context('config-context')
-      $('#controls > div').removeClass('active')
+      $("#controls img").removeClass('active')
       $(this).addClass('active')
+
+  $('#images-button').on 'click', (e) ->
+    if $(e.currentTarget).hasClass('active')
+      $("#controls img").removeClass('active')
+      $('#context-container > div').hide(100)
+    else
+      active_context('images-context')
+      $("#controls img").removeClass('active')
+      $(this).addClass('active')
+
+
 
   load_thumb_effects = ->
     # FIXME: Don't show the captured image
@@ -78,7 +89,7 @@ $(document).ready ->
       diffW = video.clientWidth - canvas.width
       diffHT = diffH * thumbSize / canvas.height
       diffWT = diffW * thumbSize / canvas.width
-      thumbWidth = thumbSize * canvas.width / canvas.height
+      thumbWidth = thumbSize * video.clientWidth / video.clientHeight
 
       ctx.drawImage(video, -diffW / 2, -diffH / 2, video.clientWidth, video.clientHeight)
       thumb_ctx.drawImage(video, -diffWT / 2, -diffHT / 2, thumbWidth, thumbSize)
