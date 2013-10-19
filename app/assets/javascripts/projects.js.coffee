@@ -158,4 +158,4 @@ $(document).ready ->
        contentType: false,
        success: (data) ->
          console.log("enviou imagem e recebeu ", data.external_path)
-         $('#images-context').append('<img class="image-thumb" src="' +data.external_thumb_path + '" data-content="' + data.external_path + '" data-id="' + data.id +  '" />')
+         $('#images-context').append('&nbsp;<img class="image-thumb" src="' +data.external_thumb_path + '" data-content="' + data.external_path + '" data-id="' + data.id +  '" />')
