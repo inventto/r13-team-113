@@ -35,7 +35,16 @@ body {
 }
 #effects {
 	overflow: auto;
+	float: left;
+	width: 90px;
 	white-space: nowrap;
+	height: 500px;
+	border-radius: 10px;
+	border: 2px solid white;
+	padding: 10px 15px;
+	margin: 0 25px;
+	--moz-border-radius: 10px;
+	--webkit-border-radius: 10px;
 }
 #base-image, #effects {
 	text-align: center;
@@ -47,10 +56,9 @@ body {
 	width: 32px;
 }
 #capture {
-	margin: 0 10px 0 107px;
+	margin: 0 auto;
 	height: 500px;
 	width: 500px;
-	float: left;
 	border: 10px solid black;
 }
 #base-image-wrapper, #camera-image {
@@ -92,15 +100,16 @@ body {
 	margin: 0 15px;
 }
 #opacity-controls {
-	float: left;
+	float: right;
 	height: 500px;
 	width: 100px;
+	margin: 0 25px;
 	border: 2px solid white;
-	margin: 0 30px;
 	border-radius: 10px;
 	--moz-border-radius: 10px;
 	--webkit-border-radius: 10px;
 	text-align: center;
+	padding: 10px;
 }
 #slider-opacity {
 	float:left;
@@ -108,9 +117,12 @@ body {
 	margin: 10px 40px;
 }
 #context-container {
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0,0,0,0.3);
 	padding: 30px 0;
 }
 img.active {
 	background: url(/images/isactive.png) no-repeat;
+}
+.form-actions {
+	background-color: rgba(255,255,255,0.3) !important;
 }
