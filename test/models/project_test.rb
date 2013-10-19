@@ -24,10 +24,10 @@ class ProjectTest < ActiveSupport::TestCase
   end
   test "should allow add images and set imagebase as soon as the first image was added" do
     project = ONE_PROJECT.call
-    img = project.images.create path: Rails.root.join("test","fixtures", "brands.png")
+    img = project.images.create path: Rails.root.join("test","fixtures", "brands.png").to_s
     assert img == project.images.first
     assert Dir.exists? project.dir
-    assert Dir.exists? project.thumb_dir
+    assert Dir.exists? project.thumbs_dir
     assert File.exists? img.path
   end
 end
