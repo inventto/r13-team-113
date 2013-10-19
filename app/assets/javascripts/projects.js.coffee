@@ -8,5 +8,7 @@ $(document).ready ->
     Pixastic.process(document.getElementById("testimage"), "invert")
   $(".desaturate").on 'click', (e) ->
     Pixastic.process(document.getElementById("testimage"), "desaturate")
-
+  $(".slider").slider({orientation: "horizontal", value: 100})
+  $(".slider").on "slidechange", ( event, ui ) ->
+    $("#testimage").fadeTo(100, ui.value / 100) 
   
