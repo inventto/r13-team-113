@@ -17,5 +17,11 @@
 //= require pixastic/pixastic.core
 //= require pixastic/actions/invert
 //= require pixastic/actions/desaturate
+//= require pixastic/actions/brightness
+//= require pixastic/actions/coloradjust
+//= require pixastic/actions/laplace
+//= require pixastic/actions/hsl
+//= require pixastic/actions/sepia
+//= require pixastic/actions/solarize
 //= require turbolinks
 //= require_tree .
