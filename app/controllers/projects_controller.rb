@@ -1,7 +1,7 @@
 
 require 'base64'
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :edit, :update, :destroy, :add_image]
+  before_action :set_project, only: [:show, :edit, :update, :destroy, :add_image, :export]
 
   # GET /projects
   # GET /projects.json
@@ -76,6 +76,12 @@ class ProjectsController < ApplicationController
     @image = Image.create path: image_file, project: @project
     respond_to do |format|
       format.json { render json: @image }
+    end
+  end
+  def export
+    @project.render_video!
+    respond_to do |format|
+      format.json { render json: @project }
     end
   end
 
