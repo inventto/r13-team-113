@@ -32,3 +32,14 @@ body {
 .navbar-inner {
 	padding: 30px 30px 20px ! important;
 }
+#effects {
+	overflow: auto;
+	white-space: nowrap;
+}
+#base-image, #effects {
+	text-align: center;
+}
+#effects > * {
+	float: left;
+	margin: 6px 3px;
+}
