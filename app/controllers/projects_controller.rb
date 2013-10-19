@@ -80,10 +80,7 @@ class ProjectsController < ApplicationController
     end
   end
   def export
-    @project.render_video!
-    respond_to do |format|
-      format.json { render json: @project }
-    end
+    send_file @project.render_video!
   end
 
   private

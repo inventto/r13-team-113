@@ -58,7 +58,7 @@ $(document).ready ->
     window.location = "/projects"
 
   $('#download-button').on 'click', (e) ->
-    window.location = "/export/" + $('#project_url').val() + ".mp4";
+    window.location = window.location.pathname.replace('edit','export')
 
   $('#images-button').on 'click', (e) ->
     if $(e.currentTarget).hasClass('active')
