@@ -105,8 +105,8 @@ $(document).ready ->
 
       ctx.drawImage(video, -diffW / 2, -diffH / 2, video.clientWidth, video.clientHeight)
       thumb_ctx.drawImage(video, -diffWT / 2, -diffHT / 2, thumbWidth, thumbSize)
-      blob =  canvas.toDataURL('image/webp')
-      thumb_blob = thumb_canvas.toDataURL('image/webp')
+      blob =  canvas.toDataURL('image/png')
+      thumb_blob = thumb_canvas.toDataURL('image/png')
       $('img#captured-image').attr 'src', blob
       if $('#use_as_base')[0].checked
         $('img#base-image').attr 'src', blob
