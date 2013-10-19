@@ -2,30 +2,21 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).ready ->
-  $(".revert").on 'click', (e) ->
-    Pixastic.revert(document.getElementById("base-image"))
-  $(".invert").on 'click', (e) ->
-    Pixastic.process(document.getElementById("base-image"), "invert")
-  $(".desaturate").on 'click', (e) ->
-    Pixastic.process(document.getElementById("base-image"), "desaturate")
-  $(".brightness").on 'click', (e) ->
-    Pixastic.process(document.getElementById("base-image"), "brightness", {brightness:50,contrast:0})
-  $(".darkness").on 'click', (e) ->
-    Pixastic.process(document.getElementById("base-image"), "brightness", {brightness:-50,contrast:0})
-  $(".contrast").on 'click', (e) ->
-    Pixastic.process(document.getElementById("base-image"), "brightness", {brightness:0,contrast:0.25})
-  $(".laplace").on 'click', (e) ->
-    Pixastic.process(document.getElementById("base-image"), "laplace", {edgeStrength:0.9,invert:false,greyLevel:0})
-  $(".sepia").on 'click', (e) ->
-    Pixastic.process(document.getElementById("base-image"), "sepia")
-  $(".hue").on 'click', (e) ->
-    Pixastic.process(document.getElementById("base-image"), "hsl", {hue:32,saturation:0,lightness:0})
-  $(".solarize").on 'click', (e) ->
-    Pixastic.process(document.getElementById("base-image"), "solarize")
-  $(".transparent").on 'click', (e) ->
-    Pixastic.process(document.getElementById("base-image"), "transparent")
-  $(".transparent2").on 'click', (e) ->
-    Pixastic.process(document.getElementById("base-image"), "transparent", {white: true})
+  base_image = $("#base-image")[0]
+  $("div[withEffect]").on 'click', (e) ->
+    current_effect = e.attr("class")[0]
+    switch current_effect
+      when "revert" then Pixastic.revert(base_image)
+      when "brightness" then Pixastic.process(base_image, "brightness", {brightness:50,contrast:0})
+      when "darkness" then Pixastic.process(base_image, "brightness", {brightness:-50,contrast:0})
+      when "contrast" then Pixastic.process(base_image, "brightness", {brightness:0,contrast:0.25})
+      when "laplace" then  Pixastic.process(base_image, "laplace", {edgeStrength:0.9,invert:false,greyLevel:0})
+      when "hue" then Pixastic.process(base_image, "hsl", {hue:32,saturation:0,lightness:0})
+      when "transparent2" then Pixastic.process(base_image, "transparent", {white: true})
+      else
+        Pixastic.process(base_image, current_effect)
+
+    $.ajax type:"PUT", url: window.location.replace("edit", ""), data:{project:{baseimage_effect: current_effect}}
 
   $("#slider-opacity").slider({orientation: "vertical", value: 50})
   $("#base-image").fadeTo(200, 0.5)
