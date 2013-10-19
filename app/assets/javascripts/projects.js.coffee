@@ -41,6 +41,18 @@ $(document).ready ->
       $("#controls img").removeClass('active')
       $(this).addClass('active')
 
+  $('#save-button').on 'click', (e) ->
+    $('#form').submit()
+
+  $('#new-button').on 'click', (e) ->
+    window.location = "/projects/new"
+
+  $('#list-button').on 'click', (e) ->
+    window.location = "/projects"
+
+  $('#download-button').on 'click', (e) ->
+    window.location = "/export/" + $('#project_url').val() + ".mp4";
+
   $('#images-button').on 'click', (e) ->
     if $(e.currentTarget).hasClass('active')
       $("#controls img").removeClass('active')

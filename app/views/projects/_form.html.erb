@@ -1,22 +1,29 @@
-<%= form_for @project, :html => { :class => 'form-horizontal' } do |f| %>
+<%= form_for @project, :html => { :id => "form", :class => 'form-horizontal' } do |f| %>
   <div class="control-group">
     <%= render :partial => 'image' %>
   </div>
   <div id="controls" class="control-group">
-    <%= image_tag("uploadbutton.png", id: "upload-button", title: "Upload image") %>
-    <%= image_tag("filterbutton.png", id: "images-button", class: "active", title: "List images") %>
-    <%= image_tag("plussnapbutton.png", id: "snapshot-button", title: "Snapshot") %>
-    <%= image_tag("configbutton.png", id: "config-button", title: "Configuration") %>
+    <%= image_tag("configbutton.png", id: "config-button", class: @project.id ? "" : "active", title: "Configuration") %>
+    <%= image_tag("filterbutton.png", id: "images-button", class: @project.id ? "active" : "", title: "List images") %>
+    |
     <%= image_tag("downloadbutton.png", id: "download-button", title: "Download") %>
+    |
+    <%= image_tag("uploadbutton.png", id: "upload-button", title: "Upload image") %>
+    <%= image_tag("plussnapbutton.png", id: "snapshot-button", title: "Snapshot") %>
+    |
+    <%= image_tag("saveprjbutton.png", id: "save-button", title: "Save Project", onclick: "$('#form').submit();") %> 
+    &nbsp; &nbsp; &nbsp; &nbsp; | &nbsp; &nbsp; &nbsp; &nbsp; 
+    <%= image_tag("newprjbutton.png", id: "new-button", title: "New Project") %>
+    <%= image_tag("listprjbutton.png", id: "list-button", title: "List Projects") %>
   </div>
   <div id="context-container">
-    <div id="images-context">
+    <div id="images-context" style="display: <%= @project.id ? "block" : "none" %>">
       <h4>Images</h4>
       <% @project.images.each do |image| %>
-        <img class="image-thumb" src="<%= image.external_thumb_path %>" data-content="<%= image.external_path %>" />
+        <img class="image-thumb" src="<%= image.external_thumb_path %>" data-content="<%= image.external_path %>" data-id="<%= image.id %>" />
       <% end %>
     </div>
-    <div id="config-context" style="display:none">
+    <div id="config-context" style="display: <%= @project.id ? "none" : "block" %>">
       <h4>Configuration</h4>
       <div class="control-group">
         <%= f.label :name, :class => 'control-label' %>
@@ -32,10 +39,11 @@
       </div>
     </div>
   </div>
- 
+<!-- 
   <div class="form-actions">
     <%= f.submit nil, :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 projects_path, :class => 'btn' %>
   </div>
+-->
 <% end %>
