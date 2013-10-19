@@ -15,13 +15,17 @@ class ProjectsControllerTest < ActionController::TestCase
     get :new
     assert_response :success
   end
-
   test "should create project" do
     assert_difference('Project.count') do
+      post :create, project: { name: "other awesome project!", url: "aweurl" }
+    end
+  end
+  test "should not create project with an existent url" do
+    assert_no_difference('Project.count') do
       post :create, project: { name: @project.name, url: @project.url }
     end
 
-    assert_redirected_to project_path(assigns(:project))
+    assert ! assigns(:project).valid?
   end
 
   test "should show project" do
