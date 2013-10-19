@@ -64,17 +64,27 @@ class ProjectsController < ApplicationController
   end
   # POST /projects/1/add_image
   def add_image
-    @image = Image.new path: File.join(@project.directory, "#{Time.now.to_i}.png"), project: @project
-    File.open(@image.path,'wb') do |f|
-      f.write(params[:image].read)
+    img_name = "#{Time.now.to_i}.png"
+    image_file = File.join(@project.dir, img_name)
+    File.open(image_file, 'wb') do |f|
+      f.write(decode_from_param :image)
     end
-    @image.save
+    thumb_file = File.join(@project.thumbs_dir, img_name)
+    File.open(thumb_file, 'wb') do |f|
+      f.write(decode_from_param :thumb)
+    end
+    @image = Image.create path: image_file, project: @project
+    respond_to do |format|
+      format.json { render json: @image }
+    end
   end
 
   private
+    def decode_from_param name
+      Base64.decode64(params[name]['data:image/png;base64,'.length.. -1])
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_project
-      puts "set project from ", params.inspect
       @project = if params[:id]
                    Project.find(params[:id])
                  elsif params[:unique_url]
