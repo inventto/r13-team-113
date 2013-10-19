@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery.ui.all
+//= require jquery.contextMenu
 //= require twitter/bootstrap
 //= require pixastic/pixastic.core
 //= require pixastic/actions/invert

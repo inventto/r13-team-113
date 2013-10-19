@@ -64,7 +64,24 @@ $(document).ready ->
       $("#controls img").removeClass('active')
       $(this).addClass('active')
 
-
+   $.contextMenu
+     selector: '#images-context img'
+     trigger: 'hover'
+     delay: 100
+     autoHide: true
+     callback: (key, options) ->
+       img = options.$trigger[0]
+       if key == "use_as_base_image"
+         $('#base-image').attr 'src', $(img).attr('data-content')
+       else if key == "delete"
+         img.remove()
+         alert('TODO: call delete -> ' + $(img).attr('data-id'))
+     items:
+       "use_as_base_image":
+         name: "Use as Base Image"
+       "delete":
+         name: "Delete"
+     
 
   load_thumb_effects = ->
     # FIXME: Don't show the captured image
@@ -82,6 +99,7 @@ $(document).ready ->
   active_context = (context) ->
     $('#context-container > div').hide(100)
     $('#'+context).show(100)
+    $('body').scrollTo('#' + context)
 
   window.URL = window.URL || window.webkitURL
   navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
