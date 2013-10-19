@@ -2,7 +2,8 @@ class Project < ActiveRecord::Base
   validates_presence_of :name, :url
   validates_uniqueness_of :url
   validates_format_of :url, with: /^[a-z0-9\-_!]*$/m, multiline: true
-  has_many :images
+  has_many :images, after_add: set_imagebase_first
+  belongs_to :imagebase, class_name: 'Image'
   after_create :mkdir_images_dir
   def mkdir_images_dir
     [dir, thumbs_dir].each do |_dir|
@@ -15,7 +16,10 @@ class Project < ActiveRecord::Base
   def thumbs_dir
     File.join(dir,"thumbs")
   end
-  def image_base
-    images.first
+  def set_imagebase_first record
+    if images.count == 1
+      self.imagebase = images.first
+      self.save
+    end
   end
 end
