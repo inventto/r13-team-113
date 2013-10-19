@@ -3,19 +3,21 @@
     <%= render :partial => 'image' %>
   </div>
   <div id="controls" class="control-group">
-    <%= image_tag("uploadbutton.png", id: "upload-button") %>
-    <%= image_tag("filterbutton.png", id: "filter-button", class: "active") %>
-    <%= image_tag("plussnapbutton.png", id: "snapshot-button") %>
-    <%= image_tag("configbutton.png", id: "config-button") %>
-    <%= image_tag("downloadbutton.png", id: "download-button") %>
+    <%= image_tag("uploadbutton.png", id: "upload-button", title: "Upload image") %>
+    <%= image_tag("filterbutton.png", id: "images-button", class: "active", title: "List images") %>
+    <%= image_tag("plussnapbutton.png", id: "snapshot-button", title: "Snapshot") %>
+    <%= image_tag("configbutton.png", id: "config-button", title: "Configuration") %>
+    <%= image_tag("downloadbutton.png", id: "download-button", title: "Download") %>
   </div>
   <div id="context-container">
     <div id="images-context">
+      <h4>Images</h4>
       <% @project.images.each do |image| %>
         <img class="image-thumb" src="<%= image.external_thumb_path %>" data-content="<%= image.external_path %>" />
       <% end %>
     </div>
     <div id="config-context" style="display:none">
+      <h4>Configuration</h4>
       <div class="control-group">
         <%= f.label :name, :class => 'control-label' %>
         <div class="controls">
