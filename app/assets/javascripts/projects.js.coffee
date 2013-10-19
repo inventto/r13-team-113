@@ -21,7 +21,12 @@ $(document).ready ->
   $("#slider-opacity").slider({orientation: "vertical", value: 50})
   $("#base-image").fadeTo(200, 0.5)
   $("#slider-opacity").on "slidechange", ( event, ui ) ->
-    $("#base-image").fadeTo(100, ui.value / 100)
+    if $('#opacity-type')[0].checked
+      Pixastic.revert(document.getElementById("base-image"))
+      Pixastic.process(document.getElementById("base-image"), "chess", {size: ui.value})
+    else
+      $("#base-image").fadeTo(100, ui.value / 100)
+
 
   $('#config-button').on 'click', (e) ->
     if $(e.currentTarget).hasClass('active')
