@@ -40,9 +40,11 @@ body {
 #base-image, #effects {
 	text-align: center;
 }
-#effects > * {
+#effects > div {
 	float: left;
-	margin: 6px 3px;
+	margin: 6px 6px;
+	height: 32px;
+	width: 32px;
 }
 #capture {
 	margin: 0 10px 0 107px;

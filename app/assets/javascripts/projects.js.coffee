@@ -41,6 +41,10 @@ $(document).ready ->
       $('#controls > div').removeClass('active')
       $(this).addClass('active')
 
+  load_thumb_effects = ->
+    thumb_blob = thumb_canvas.toDataURL('image/webp')
+    $('#effects img').attr 'src', thumb_blob
+
   active_context = (context) ->
     $('#context-container > div').hide(100)
     $('#'+context).show(100)
