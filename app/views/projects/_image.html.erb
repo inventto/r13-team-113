@@ -17,9 +17,9 @@
 <div id="capture">
   <div id="base-image-wrapper">
     <% if @project.image_base %>
-      <%= image_tag @project.image_base.url(:large), id: "baseimage" %>
+      <%= image_tag @project.image_base.url(:large), id: "base-image" %>
     <% else %>
-      <%= image_tag "/images/default.png", id: "baseimage" %>
+      <%= image_tag "/images/default.png", id: "base-image" %>
     <% end %>
   </div>
   <div id="camera-image">
@@ -28,8 +28,7 @@
     <img id="captured-image" style="display:none"/>
   </div>
 </div>
-<div id="controls">
-  <%= image_tag("snapbutton.png", id: "snapshot-button") %>
+<div id="opacity-controls">
+  <h4>Opacity</h4>
+  <div id="slider-opacity"></div>
 </div>
-<h4>Transparency</h4>
-<div class="slider"></div>
