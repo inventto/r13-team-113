@@ -138,6 +138,8 @@ $(document).ready ->
       $('img#captured-image').show()
       $(video).hide()
       load_thumb_effects()
+      $('body').css({opacity: 0})
+      $('body').animate({opacity: 1}, 300 )
 
   window.firstPic = true
   pic = false
