@@ -16,7 +16,7 @@ html {
 	background-image: url(/images/background.png);
 }
 body {
-	width: 1360px;
+	width: 1000px;
 	margin: 0 auto ! important;
 	background: transparent ! important;
 }
@@ -122,4 +122,25 @@ img.active {
 }
 .form-actions {
 	background-color: rgba(255,255,255,0.3) !important;
+}
+.control-group {
+	margin-bottom: 10px ! important;
+}
+.navbar-inner {
+	background: none ! important;
+	border: none ! important;
+	padding: 0 ! important;
+}
+.navbar {
+	margin: 0 ! important;
+}
+.navbar .brand {
+	float: none ! important;
+	margin: 0 auto ! important;
+}
+.page-header {
+	margin: 0px 0 20px ! important;
+}
+h1 {
+	margin: 10px 0 0 ! important;
 }

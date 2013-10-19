@@ -51,7 +51,7 @@ $(document).ready ->
     #  _ctx.clearRect(4,4,24,24)
     #  _img = new Image()
     #  _img.src = thumb_blob
-    #  _ctx.drawImage(_img,-32,-32,128,128)
+    #  _ctx.drawImage(_img,-32,-32,thumbSize,thumbSize)
     #Pixastic.init()
 
   active_context = (context) ->
@@ -63,8 +63,9 @@ $(document).ready ->
   video = $('#capture video')[0]
   canvas = $('#capture canvas.camera')[0]
   thumb_canvas = $('#capture canvas.thumb-camera')[0]
-  thumb_canvas.width = 128
-  thumb_canvas.height = 128
+  thumbSize = 128
+  thumb_canvas.width = thumbSize
+  thumb_canvas.height = thumbSize
   canvas.width = 500
   canvas.height = 500
   ctx = canvas.getContext('2d')
@@ -75,16 +76,17 @@ $(document).ready ->
     if (localMediaStream)
       diffH = video.clientHeight - canvas.height
       diffW = video.clientWidth - canvas.width
-      diffHT = diffH * 128 / canvas.height
-      diffWT = diffW * 128 / canvas.width
-      thumbWidth = 128 * canvas.width / canvas.height
+      diffHT = diffH * thumbSize / canvas.height
+      diffWT = diffW * thumbSize / canvas.width
+      thumbWidth = thumbSize * canvas.width / canvas.height
 
       ctx.drawImage(video, -diffW / 2, -diffH / 2, video.clientWidth, video.clientHeight)
-      thumb_ctx.drawImage(video, -diffWT / 2, -diffHT / 2, thumbWidth, 128)
+      thumb_ctx.drawImage(video, -diffWT / 2, -diffHT / 2, thumbWidth, thumbSize)
       blob =  canvas.toDataURL('image/webp')
       thumb_blob = thumb_canvas.toDataURL('image/webp')
       $('img#captured-image').attr 'src', blob
-      $('img#base-image').attr 'src', blob
+      if $('#use_as_base')[0].checked
+        $('img#base-image').attr 'src', blob
       $('img#thumbimage').attr 'src', thumb_blob
 
       uploadImageFromBlob blob, thumb_blob
@@ -94,12 +96,17 @@ $(document).ready ->
       $(video).hide()
       load_thumb_effects()
 
-  pic = true
+  firstPic = true
+  pic = false
   $("#snapshot-button").on "click", ->
     if pic
       this.src = "/images/plussnapbutton.png"
       snapshot()
+      $('#base-image').show()
     else
+      if firstPic
+        firstPic = false
+        $('#base-image').hide()
       this.src = "/images/snapbutton.png"
       $('img#captured-image').hide()
       $('img#thumbimage').hide()
