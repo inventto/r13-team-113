@@ -14,9 +14,10 @@ gem 'uglifier', '>= 1.3.0'
 
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
-group :assets do
-  gem 'twitter-bootstrap-rails'
-end
+gem 'twitter-bootstrap-rails'
+gem 'libv8'
+gem 'therubyracer'
+gem "less-rails"
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
