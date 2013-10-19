@@ -43,3 +43,8 @@ body {
 	float: left;
 	margin: 6px 3px;
 }
+#base-image-wrapper, #capture video, #capture canvas {
+  width:500px;
+  height:500px;
+  margin:0 auto;
+}

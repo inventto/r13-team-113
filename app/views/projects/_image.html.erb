@@ -14,8 +14,18 @@
   <input type="button" class="transparent2" value="Transparent 2">
 </div>
 <h4>Base Image</h4>
-<div id="base-image">
-  <img id="testimage" src="/images/Wildebeest.jpg"/>
-</div>
+<div id="capture">
+  <div id="camera-image">
+    <video autoplay></video>
+    <canvas class="camera" style="display:none">
+    </canvas>
+  </div>
+  <div id="base-image-wrapper">
+    <% if @project.image_base %>
+      <%= image_tag @project.image_base.url(:large), id: "baseimage" %>
+    <% else %>)
+      <%= image_tag("snapbutton.png", id: "snapshot-button") %>
+     <% end %>
+  </div>
 <h4>Transparency</h4>
 <div class="slider"></div>

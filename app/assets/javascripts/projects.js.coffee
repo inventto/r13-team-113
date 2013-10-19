@@ -3,42 +3,56 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).ready ->
   $(".revert").on 'click', (e) ->
-    Pixastic.revert(document.getElementById("testimage"))
+    Pixastic.revert(document.getElementById("baseimage"))
   $(".invert").on 'click', (e) ->
-    Pixastic.process(document.getElementById("testimage"), "invert")
+    Pixastic.process(document.getElementById("baseimage"), "invert")
   $(".desaturate").on 'click', (e) ->
-    Pixastic.process(document.getElementById("testimage"), "desaturate")
+    Pixastic.process(document.getElementById("baseimage"), "desaturate")
   $(".brightness").on 'click', (e) ->
-    Pixastic.process(document.getElementById("testimage"), "brightness", {brightness:50,contrast:0})
+    Pixastic.process(document.getElementById("baseimage"), "brightness", {brightness:50,contrast:0})
   $(".darkness").on 'click', (e) ->
-    Pixastic.process(document.getElementById("testimage"), "brightness", {brightness:-50,contrast:0})
+    Pixastic.process(document.getElementById("baseimage"), "brightness", {brightness:-50,contrast:0})
   $(".contrast").on 'click', (e) ->
-    Pixastic.process(document.getElementById("testimage"), "brightness", {brightness:0,contrast:0.25})
+    Pixastic.process(document.getElementById("baseimage"), "brightness", {brightness:0,contrast:0.25})
   $(".laplace").on 'click', (e) ->
-    Pixastic.process(document.getElementById("testimage"), "laplace", {edgeStrength:0.9,invert:false,greyLevel:0})
+    Pixastic.process(document.getElementById("baseimage"), "laplace", {edgeStrength:0.9,invert:false,greyLevel:0})
   $(".sepia").on 'click', (e) ->
-    Pixastic.process(document.getElementById("testimage"), "sepia")
+    Pixastic.process(document.getElementById("baseimage"), "sepia")
   $(".hue").on 'click', (e) ->
-    Pixastic.process(document.getElementById("testimage"), "hsl", {hue:32,saturation:0,lightness:0})
+    Pixastic.process(document.getElementById("baseimage"), "hsl", {hue:32,saturation:0,lightness:0})
   $(".solarize").on 'click', (e) ->
-    Pixastic.process(document.getElementById("testimage"), "solarize")
+    Pixastic.process(document.getElementById("baseimage"), "solarize")
   $(".transparent").on 'click', (e) ->
-    Pixastic.process(document.getElementById("testimage"), "transparent")
+    Pixastic.process(document.getElementById("baseimage"), "transparent")
   $(".transparent2").on 'click', (e) ->
-    Pixastic.process(document.getElementById("testimage"), "transparent", {white: true})
+    Pixastic.process(document.getElementById("baseimage"), "transparent", {white: true})
   $(".slider").slider({orientation: "horizontal", value: 100})
   $(".slider").on "slidechange", ( event, ui ) ->
-    $("#testimage").fadeTo(100, ui.value / 100) 
+    $("#baseimage").fadeTo(100, ui.value / 100)
 
-  dataURLtoBlob = (dataURL) ->
-    binary = atob(dataURL.split(',')[1])
-    array = []
-    for i in binary.length
-      array.push binary.charCodeAt(i)
-    new Blob([new Uint8Array(array)], type: 'image/png')
+  window.URL = window.URL || window.webkitURL
+  navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
+  video = $('#capture video')[0]
+  canvas = $('#capture canvas.camera')[0]
+  ctx = canvas.getContext('2d')
+  localMediaStream = null
 
-  uploadImageFromUrl = (url) ->
-     file= dataURLtoBlob(url)
+  snapshot = ->
+    if (localMediaStream)
+      ctx.drawImage(video, 0, 0)
+      document.querySelector('img').src = canvas.toDataURL('image/webp')
+
+  $("#snapshot-button").on "click", snapshot
+  video.addEventListener('click', snapshot, false)
+  sourceStream = (stream) ->
+    video.src = window.URL.createObjectURL(stream)
+    localMediaStream = stream
+
+  onFailSoHard = -> {}
+  navigator.getUserMedia video: true, sourceStream, onFailSoHard
+
+  uploadImageFromCanvas = (canvas) ->
+     file = canvas.getContext()
      fd = new FormData()
      fd.append("image", file)
      $.ajax

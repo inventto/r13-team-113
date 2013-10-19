@@ -10,4 +10,7 @@ class Project < ActiveRecord::Base
   def directory
     @directory ||= File.join UPLOADS_DIR, self.id.to_s
   end
+  def image_base
+    images.first
+  end
 end
