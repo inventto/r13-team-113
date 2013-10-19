@@ -9,6 +9,7 @@ Reinventto::Application.routes.draw do
 
   # Example of regular route:
   get 's/:unique_url' => 'projects#show'
+  get '/projects/:id/export' => 'projects#export', as: :export
   post '/projects/:id/add_image' => 'projects#add_image', as: :add_image
 
   # Example of named route that can be invoked with purchase_url(id: product.id)

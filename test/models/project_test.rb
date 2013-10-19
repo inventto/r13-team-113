@@ -20,6 +20,14 @@ class ProjectTest < ActiveSupport::TestCase
   end
   test "should create the uploads directory for images" do
     project = ONE_PROJECT.call
-    assert Dir.exists?(project.directory)
+    assert Dir.exists?(project.dir)
+  end
+  test "should allow add images and set imagebase as soon as the first image was added" do
+    project = ONE_PROJECT.call
+    img = project.images.create path: Rails.root.join("test","fixtures", "brands.png")
+    assert img == project.images.first
+    assert Dir.exists? project.dir
+    assert Dir.exists? project.thumb_dir
+    assert File.exists? img.path
   end
 end
