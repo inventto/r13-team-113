@@ -49,7 +49,7 @@ $(document).ready ->
   navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
   video = $('#capture video')[0]
   canvas = $('#capture canvas.camera')[0]
-  thumb_canvas = $('#capture canvas.camera')[0]
+  thumb_canvas = $('#capture canvas.thumb-camera')[0]
   thumb_canvas.width = 128
   thumb_canvas.height = 128
   canvas.width = 500
@@ -68,12 +68,12 @@ $(document).ready ->
       blob =  canvas.toDataURL('image/webp')
       thumb_blob = thumb_canvas.toDataURL('image/webp')
       $('img#captured-image').attr 'src', blob
-      $('img#baseimage').attr 'src', blob
+      $('img#base-image').attr 'src', blob
       $('img#thumbimage').attr 'src', thumb_blob
 
       uploadImageFromBlob blob, thumb_blob
 
-      $('img#thumbimage').show()
+      $('img#thumbimage').hide()
       $('img#captured-image').show()
       $(video).hide()
 
