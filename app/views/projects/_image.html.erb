@@ -23,7 +23,10 @@
 <div id="capture">
   <div id="base-image-wrapper">
     <% if @project.imagebase %>
-      <%= image_tag @project.imagebase.url, id: "base-image" %>
+      <script type="text/javascript">
+        window.firstPic = false;
+      </script>
+      <%= image_tag @project.imagebase.external_path, id: "base-image" %>
     <% else %>
       <%= image_tag "/images/default.png", id: "base-image" %>
     <% end %>
