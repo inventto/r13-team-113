@@ -7,16 +7,19 @@
   <div class="invert"><img title="Invert" class="pixastic pixastic-invert" src="/images/default32.png"></div>
   <div class="desaturate"><img title="Desaturate" class="pixastic pixastic-desaturate" src="/images/default32.png"></div>
   <div class="brightness"><img title="Brightness" class="pixastic pixastic-brightness(brightness=50)" src="/images/default32.png"></div>
-  <div class="darkness"><img title="Darkness" class="pixastic pixastic-brightness(brightness=50)" src="/images/default32.png"></div>
-  <div class="contrast"><img title="Contrast" src="/images/default32.png"></div>
-  <div class="laplace"><img title="Laplace" src="/images/default32.png"></div>
-  <div class="sepia"><img title="Sepia" src="/images/default32.png"></div>
-  <div class="hue"><img title="Hue" src="/images/default32.png"></div>
-  <div class="solarize"><img title="Solarize" src="/images/default32.png"></div>
-  <div class="transparent"><img title="Transparent" src="/images/default32.png"></div>
-  <div class="transparent2"><img title="Transparent 2" src="/images/default32.png"></div>
+  <div class="darkness"><img title="Darkness" class="pixastic pixastic-brightness(brightness=-50)" src="/images/default32.png"></div>
+  <div class="contrast"><img title="Contrast" class="pixastic pixastic-brightness(contrast=0.5)" src="/images/default32.png"></div>
+  <div class="laplace"><img title="Laplace" class="pixastic pixastic-laplace(edgeStrength=0.9)" src="/images/default32.png"></div>
+  <div class="sepia"><img title="Sepia" class="pixastic pixastic-sepia" src="/images/default32.png"></div>
+  <div class="hue"><img title="Hue" class="pixastic pixastic-hsl(hue=32)" src="/images/default32.png"></div>
+  <div class="solarize"><img title="Solarize" class="pixastic pixastic-solarize" src="/images/default32.png"></div>
+  <div class="transparent"><img title="Transparent" class="pixastic pixastic-transparent" src="/images/default32.png"></div>
+  <div class="transparent2"><img title="Transparent 2" class="pixastic pixastic-transparent(white=true)" src="/images/default32.png"></div>
 </div>
-<h4>Base Image</h4>
+<div id="opacity-controls">
+  <h4>Opacity</h4>
+  <div id="slider-opacity"></div>
+</div>
 <div id="capture">
   <div id="base-image-wrapper">
     <% if @project.image_base %>
@@ -32,8 +35,4 @@
     <canvas class="camera" style="display:none"></canvas>
     <img id="captured-image" style="display:none"/>
   </div>
-</div>
-<div id="opacity-controls">
-  <h4>Opacity</h4>
-  <div id="slider-opacity"></div>
 </div>

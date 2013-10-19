@@ -195,6 +195,8 @@ var Pixastic = (function() {
 		parseOnLoad : false,
 
 		debug : false,
+
+		init: init,
 		
 		applyAction : function(img, dataImg, actionName, options) {
 
