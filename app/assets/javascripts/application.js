@@ -23,5 +23,6 @@
 //= require pixastic/actions/hsl
 //= require pixastic/actions/sepia
 //= require pixastic/actions/solarize
+//= require pixastic/actions/transparent
 //= require turbolinks
 //= require_tree .

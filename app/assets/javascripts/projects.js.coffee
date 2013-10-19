@@ -22,6 +22,10 @@ $(document).ready ->
     Pixastic.process(document.getElementById("testimage"), "hsl", {hue:32,saturation:0,lightness:0})
   $(".solarize").on 'click', (e) ->
     Pixastic.process(document.getElementById("testimage"), "solarize")
+  $(".transparent").on 'click', (e) ->
+    Pixastic.process(document.getElementById("testimage"), "transparent")
+  $(".transparent2").on 'click', (e) ->
+    Pixastic.process(document.getElementById("testimage"), "transparent", {white: true})
   $(".slider").slider({orientation: "horizontal", value: 100})
   $(".slider").on "slidechange", ( event, ui ) ->
     $("#testimage").fadeTo(100, ui.value / 100) 
