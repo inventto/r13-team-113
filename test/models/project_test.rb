@@ -14,4 +14,8 @@ class ProjectTest < ActiveSupport::TestCase
     assert_difference 'Project.count', 1, &ONE_PROJECT
     assert_no_difference 'Project.count', &ONE_PROJECT
   end
+  test "should have a consistent url" do
+    project = Project.create url: '  hahahah '
+    assert ! project.errors[:url].empty?
+  end
 end
