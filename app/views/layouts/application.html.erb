@@ -40,36 +40,14 @@
     <div class="navbar navbar-fluid-top">
       <div class="navbar-inner">
         <div class="container-fluid">
-          <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
           <a class="brand" href="#">Reinventto</a>
-          <div class="container-fluid nav-collapse">
-            <ul class="nav">
-              <li><%= link_to I18n.t 'projects.title', "/projects"  %></li>
-              <li><%= link_to "Link2", "/path2"  %></li>
-              <li><%= link_to "Link3", "/path3"  %></li>
-            </ul>
-          </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
 
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span3">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Sidebar</li>
-              <li><%= link_to I18n.t 'projects.title', "/projects"  %></li>
-              <li><%= link_to "Link2", "/path2"  %></li>
-              <li><%= link_to "Link3", "/path3"  %></li>
-            </ul>
-          </div><!--/.well -->
-        </div><!--/span-->
-        <div class="span9">
+        <div>
           <%= bootstrap_flash %>
           <%= yield %>
         </div>
