@@ -15,18 +15,22 @@ class ProjectsControllerTest < ActionController::TestCase
     get :new
     assert_response :success
   end
-
   test "should create project" do
     assert_difference('Project.count') do
-      post :create, project: { name: @project.name, url: @project.url }
+      post :create, project: { name: "other awesome project!", url: "aweurl" }
     end
-
-    assert_redirected_to project_path(assigns(:project))
+    assert_no_difference('Project.count') do
+      post :create, project: { name: "other awesome project!", url: "aweurl" }
+    end
   end
-
   test "should show project" do
     get :show, id: @project
     assert_response :success
+  end
+  test "should see the project by the unique url" do
+    get :show, unique_url: 'first_awesome_project'
+    assert_response :success
+    assert assigns(:project).url == 'first_awesome_project'
   end
 
   test "should get edit" do
