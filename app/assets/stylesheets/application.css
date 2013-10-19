@@ -18,13 +18,16 @@ body {
 	width: 1000px;
 	margin: 0 auto ! important;
 }
-
 .brand {
 	background: url(/images/brand.png) no-repeat;
 	height: 65px;
-	width: 320px;
+	width: 360px;
+	margin: -30px 0px;
 	text-indent: -9000px;
 }
 .brand:hover {
 	background-color: transparent ! important;
+}
+.navbar-inner {
+	padding: 30px 30px 20px ! important;
 }
