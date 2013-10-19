@@ -39,9 +39,12 @@ $(document).ready ->
 
   snapshot = ->
     if (localMediaStream)
+      console.log video
       ctx.drawImage(video, 0, 0)
-      $('img#captured-image')[0].src = canvas.toDataURL('image/webp')
-      $('img#baseimage')[0].src = canvas.toDataURL('image/webp')
+      blob =  canvas.toDataURL('image/webp')
+      $('img#captured-image')[0].src = blob
+      $('img#baseimage')[0].src = blob
+      uploadImageFromBlob blob
       $('img#captured-image').show()
       $(video).hide()
 
@@ -53,6 +56,7 @@ $(document).ready ->
       $('img#captured-image').hide()
       $(video).show()
     pic = !pic
+
   video.addEventListener('click', snapshot, false)
   sourceStream = (stream) ->
     video.src = window.URL.createObjectURL(stream)
@@ -61,15 +65,14 @@ $(document).ready ->
   onFailSoHard = -> {}
   navigator.getUserMedia video: true, sourceStream, onFailSoHard
 
-  uploadImageFromCanvas = (canvas) ->
-     file = canvas.getContext()
+  uploadImageFromBlob = (blob) ->
      fd = new FormData()
-     fd.append("image", file)
+     fd.append("image", blob)
      $.ajax
-       url: window.location.url.toString()+"/images"
-       type: "POST"
-       data: fd
-       processData: false
-       contentType: false
+       url: window.location.pathname.replace('edit','add_image'),
+       data: fd,
+       type: 'POST',
+       processData: false,
+       contentType: false,
        success: (data) ->
          console.log("enviou imagem e recebeu ", data)
