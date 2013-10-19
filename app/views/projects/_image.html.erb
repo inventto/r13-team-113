@@ -17,10 +17,11 @@
 <div id="capture">
   <div id="base-image-wrapper">
     <% if @project.image_base %>
-      <%= image_tag @project.image_base.url(:large), id: "base-image" %>
+      <%= image_tag @project.image_base.url, id: "base-image" %>
     <% else %>
       <%= image_tag "/images/default.png", id: "base-image" %>
     <% end %>
+    <img id="thumbimage" style="display:none"/>
   </div>
   <div id="camera-image">
     <video autoplay></video>

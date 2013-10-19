@@ -49,21 +49,31 @@ $(document).ready ->
   navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
   video = $('#capture video')[0]
   canvas = $('#capture canvas.camera')[0]
+  thumb_canvas = $('#capture canvas.camera')[0]
+  thumb_canvas.width = 128
+  thumb_canvas.height = 128
   canvas.width = 500
   canvas.height = 500
   ctx = canvas.getContext('2d')
+  thumb_ctx = thumb_canvas.getContext('2d')
   localMediaStream = null
 
   snapshot = ->
     if (localMediaStream)
-      console.log video
       diffH = video.clientHeight - canvas.height
       diffW = video.clientWidth - canvas.width
+
       ctx.drawImage(video, -diffW / 2, -diffH / 2, video.clientWidth, video.clientHeight)
+      thumb_ctx.drawImage(video, -diffW / 2, -diffH / 2, 128, 128)
       blob =  canvas.toDataURL('image/webp')
-      $('img#captured-image')[0].src = blob
-      $('img#base-image')[0].src = blob
-      uploadImageFromBlob blob
+      thumb_blob = thumb_canvas.toDataURL('image/webp')
+      $('img#captured-image').attr 'src', blob
+      $('img#baseimage').attr 'src', blob
+      $('img#thumbimage').attr 'src', thumb_blob
+
+      uploadImageFromBlob blob, thumb_blob
+
+      $('img#thumbimage').show()
       $('img#captured-image').show()
       $(video).hide()
 
@@ -77,6 +87,7 @@ $(document).ready ->
       this.src = "/images/snapbutton.png"
       $(this).css({margin: "0px"})
       $('img#captured-image').hide()
+      $('img#thumbimage').hide()
       $(video).show()
     pic = !pic
 
@@ -88,9 +99,10 @@ $(document).ready ->
   onFailSoHard = -> {}
   navigator.getUserMedia video: true, sourceStream, onFailSoHard
 
-  uploadImageFromBlob = (blob) ->
+  uploadImageFromBlob = (blob, thumb_blob) ->
      fd = new FormData()
      fd.append("image", blob)
+     fd.append("thumb", thumb_blob)
      $.ajax
        url: window.location.pathname.replace('edit','add_image'),
        data: fd,

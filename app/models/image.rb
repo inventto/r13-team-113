@@ -1,4 +1,9 @@
 class Image < ActiveRecord::Base
   belongs_to :project
-  has_attached_file :path, styles: {thumbnail: "64x64#", medium: '256x256>', large: '500x500>'}
+  def url
+    File.join(project.dir, path)
+  end
+  def thumb_url
+    File.join(project.thumbs_dir, path)
+  end
 end
