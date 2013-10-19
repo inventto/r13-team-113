@@ -41,17 +41,18 @@ $(document).ready ->
   canvas.width = 500
   canvas.height = 500
   ctx = canvas.getContext('2d')
+  thumb_ctx = thumb_canvas.getContext('2d')
   localMediaStream = null
 
   snapshot = ->
     if (localMediaStream)
       diffH = video.clientHeight - canvas.height
       diffW = video.clientWidth - canvas.width
-      thumb_ctx = thumb_canvas.getContext('2d')
-      thumb_ctx.drawImage(video, -diffW / 2, -diffH / 2, 128, 128)
-      thumb_blob =  canvas.toDataURL('image/webp')
+
       ctx.drawImage(video, -diffW / 2, -diffH / 2, video.clientWidth, video.clientHeight)
       blob =  canvas.toDataURL('image/webp')
+      thumb_ctx.drawImage(video, -diffW / 2, -diffH / 2, 128, 128)
+      thumb_blob = thumb_canvas.toDataURL('image/webp')
       $('img#captured-image').attr 'src', blob
       $('img#baseimage').attr 'src', blob
 
