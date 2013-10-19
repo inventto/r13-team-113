@@ -42,8 +42,17 @@ $(document).ready ->
       $(this).addClass('active')
 
   load_thumb_effects = ->
-    thumb_blob = thumb_canvas.toDataURL('image/webp')
-    $('#effects img').attr 'src', thumb_blob
+    # FIXME: Don't show the captured image
+    #thumb_canvas = $('#capture canvas.thumb-camera')[0]
+    #thumb_blob = thumb_canvas.toDataURL('image/webp')
+    #$('#effects img').attr 'src', thumb_blob
+    #$('#effects canvas').each (i, e) ->
+    #  _ctx = e.getContext('2d')
+    #  _ctx.clearRect(4,4,24,24)
+    #  _img = new Image()
+    #  _img.src = thumb_blob
+    #  _ctx.drawImage(_img,-32,-32,128,128)
+    #Pixastic.init()
 
   active_context = (context) ->
     $('#context-container > div').hide(100)
@@ -66,9 +75,12 @@ $(document).ready ->
     if (localMediaStream)
       diffH = video.clientHeight - canvas.height
       diffW = video.clientWidth - canvas.width
+      diffHT = diffH * 128 / canvas.height
+      diffWT = diffW * 128 / canvas.width
+      thumbWidth = 128 * canvas.width / canvas.height
 
       ctx.drawImage(video, -diffW / 2, -diffH / 2, video.clientWidth, video.clientHeight)
-      thumb_ctx.drawImage(video, -diffW / 2, -diffH / 2, 128, 128)
+      thumb_ctx.drawImage(video, -diffWT / 2, -diffHT / 2, thumbWidth, 128)
       blob =  canvas.toDataURL('image/webp')
       thumb_blob = thumb_canvas.toDataURL('image/webp')
       $('img#captured-image').attr 'src', blob
@@ -80,16 +92,15 @@ $(document).ready ->
       $('img#thumbimage').hide()
       $('img#captured-image').show()
       $(video).hide()
+      load_thumb_effects()
 
   pic = true
   $("#snapshot-button").on "click", ->
     if pic
       this.src = "/images/plussnapbutton.png"
-      $(this).css({margin: "32px"})
       snapshot()
     else
       this.src = "/images/snapbutton.png"
-      $(this).css({margin: "0px"})
       $('img#captured-image').hide()
       $('img#thumbimage').hide()
       $(video).show()
