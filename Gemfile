@@ -44,7 +44,7 @@ end
 # Use unicorn as the app server
 gem 'unicorn'
 gem 'resque'
-gem "capistrano-resque"
+gem "capistrano-resque", "~> 0.1.0"
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development

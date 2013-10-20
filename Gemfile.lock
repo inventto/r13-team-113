@@ -185,7 +185,7 @@ PLATFORMS
 
 DEPENDENCIES
   capistrano
-  capistrano-resque
+  capistrano-resque (~> 0.1.0)
   coffee-rails (~> 4.0.0)
   google-analytics-rails
   jbuilder (~> 1.2)
