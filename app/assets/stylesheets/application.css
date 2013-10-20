@@ -17,7 +17,6 @@ html {
 	background-image: url(/images/background.png);
 }
 body {
-	width: 1000px;
 	margin: 0 auto ! important;
 	background: transparent ! important;
 }
@@ -32,7 +31,6 @@ body {
 	background-color: transparent ! important;
 }
 .navbar-inner {
-	width: 1170px;
 	padding: 30px 30px 20px ! important;
 }
 #effects {
