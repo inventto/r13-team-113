@@ -91,3 +91,7 @@ deploy.task :restart, :roles => :app do
   # Restart Application
   run "touch #{current_path}/tmp/restart.txt"
 end
+role :resque_worker, LINODE_SERVER_HOSTNAME
+role :resque_scheduler, LINODE_SERVER_HOSTNAME
+
+set :workers, { "my_queue_name" => 2 }

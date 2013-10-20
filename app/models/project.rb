@@ -33,8 +33,7 @@ class Project < ActiveRecord::Base
     @video_output_path ||= File.join(dir, "#{url}.mp4")
   end
   def render_video!
-    File.delete video_output_path if File.exists? video_output_path
-    `ffmpeg -y -r 1 -pattern_type glob -i '#{File.join(dir, "*.png")}' -c:v libx264 -pix_fmt yuv420p #{video_output_path}` 
+    Resque.enqueue(CreateVideo, self.id)
     video_output_path
   end
 end
