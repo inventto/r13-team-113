@@ -137,7 +137,8 @@ $(document).ready ->
       blob =  canvas.toDataURL('image/png')
       thumb_blob = thumb_canvas.toDataURL('image/png')
       $('img#captured-image').attr 'src', blob
-      if $('#use_as_base')[0].checked or base_image.src is "/images/default.png"
+
+      if $('#use_as_base')[0].checked or $("#base-image")[0].src is "/images/default.png"
         $('img#base-image').attr 'src', blob
 
       $('img#thumbimage').attr 'src', thumb_blob
