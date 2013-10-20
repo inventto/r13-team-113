@@ -17,7 +17,7 @@
       <h4>Images</h4>
       <div>
         <label><input type="checkbox" id="use_as_base" />Update base image each capture.</label>
-        <label><input type="checkbox" id="mirror" />Mirror Camera.</label>
+        <label><input type="checkbox" id="mirror" checked="checked" />Mirror Camera.</label>
       </div>
       <% @project.images.each do |image| %>
         <img class="image-thumb" src="<%= image.external_thumb_path %>" data-content="<%= image.external_path %>" data-id="<%= image.id %>" />

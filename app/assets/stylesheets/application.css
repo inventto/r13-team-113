@@ -185,7 +185,7 @@ li.context-menu-item {
 	display: block;
 	padding: 5px 0 0 5px ! important
 }
-.mirror canvas, .mirror img, .mirror video {
+.mirror {
 	transform: rotateY(180deg);
 	-moz-transform: rotateY(180deg);
 	-webkit-transform: rotateY(180deg);
