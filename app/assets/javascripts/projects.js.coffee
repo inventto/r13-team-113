@@ -202,3 +202,7 @@ $(document).ready ->
          $('#images-context').append('&nbsp;<img class="image-thumb" src="' +data.thumb_url+ '" data-content="' + data.url+ '" data-id="' + data.id +  '" />')
          if $('#use_as_base')[0].checked
            $.ajax type:"PUT", url: window.location, data:{project:{imagebase_id: data.id}}
+
+
+  $('video').on 'loadstart', (e) ->
+    $('#base-image').show()
