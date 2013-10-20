@@ -19,7 +19,7 @@ $(document).ready ->
       else
         Pixastic.process(base_image, current_effect)
 
-    $.ajax type:"PUT", url: window.location.replace("edit", ""), data:{project:{baseimage_effect: current_effect}}
+    $.ajax type:"PUT", url: $('form')[0].action, data:{project:{baseimage_effect: current_effect}}
 
   $("#slider-opacity").slider({orientation: "vertical", value: 50})
   $("#base-image").fadeTo(200, 0.5)
@@ -71,15 +71,20 @@ $(document).ready ->
        if key == "use_as_base_image"
          $('#base-image').attr 'src', $(img).attr('data-content')
          $.ajax type:"PUT", url: $('form')[0].action, data:{project:{imagebase_id: $(img).attr('data-id')}}
+	 #$('body').scrollTop('#base-image')
        else if key == "delete"
          if confirm('Delete?')
            img.remove()
            $.ajax type:"DELETE", url: "/projects/image/" + $(img).attr('data-id')
      items:
-       "use_as_base_image":
-         name: "Use as Base Image"
-       "delete":
-         name: "Delete"
+       "use_as_base_image": {
+         name: " Base Image",
+         icon: "hand-up"
+       }
+       "delete": {
+         name: " Delete",
+         icon: "remove"
+       }
 
 
   load_thumb_effects = ->
@@ -98,7 +103,7 @@ $(document).ready ->
   active_context = (context) ->
     $('#context-container > div').hide(100)
     $('#'+context).show(100)
-    $('body').scrollTo('#' + context)
+    #$('body').scrollTop('#' + context)
 
   window.URL = window.URL || window.webkitURL
   navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia

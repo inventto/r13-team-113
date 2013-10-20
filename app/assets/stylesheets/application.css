@@ -159,11 +159,16 @@ h1 {
 	width: 90px;
 }
 #images-context img {
-	margin: 4px;
+	margin: 0 9px 16px 0;
 	height: 128px;
 	width: 128px;
 	cursor: pointer;
 }
 label {
 	text-align: center;
+	font-weight: bold ! important;
+}
+li.context-menu-item {
+	display: block;
+	padding: 5px 0 0 5px ! important
 }
