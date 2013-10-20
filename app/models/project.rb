@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
   validates_presence_of :name, :url
   validates_uniqueness_of :url
-  validates_format_of :url, with: /^[a-z0-9\-_!]*$/m, multiline: true
+  validates_format_of :url, with: /^[a-zA-Z0-9\-=_!]*$/m, multiline: true
   has_many :images, after_add: :set_imagebase_first
   belongs_to :imagebase, class_name: 'Image'
   after_create :mkdir_images_dir

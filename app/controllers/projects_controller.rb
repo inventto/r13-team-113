@@ -6,7 +6,16 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
+
     @projects = Project.all
+
+  end
+  def decide
+    if cookies[:unique_url]
+      redirect_to action: :edit, unique_url: cookies[:unique_url]
+    else
+      redirect_to new_project_path
+    end
   end
 
   # GET /projects/1
@@ -16,12 +25,13 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-    @project = Project.create name: "My first project", url: "project_#{Project.count+1}"
-    if @project.invalid?
-      @project.url = "project_#{Time.now.to_i}"
-      @project.save
+    @project = Project.new name: "My first project"
+    while not @project.valid?
+      @project.url = Base64.encode64(Time.now.to_i.to_s)[-10..-4]
     end
-    redirect_to edit_project_path(@project)
+    @project.save
+    cookies[:unique_url] = @project.url
+    redirect_to action: :edit, unique_url: @project.url
   end
 
   # GET /projects/1/edit
@@ -32,6 +42,7 @@ class ProjectsController < ApplicationController
   # POST /projects.json
   def create
     @project = Project.new(project_params)
+    cookies[:unique_url] = @project.url
 
     respond_to do |format|
       if @project.save
@@ -49,6 +60,7 @@ class ProjectsController < ApplicationController
   def update
     respond_to do |format|
       if @project.update(project_params)
+        cookies[:unique_url] = @project.url
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
         format.json { head :no_content }
       else
@@ -108,11 +120,7 @@ class ProjectsController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_project
-      @project = if params[:id]
-                   Project.find(params[:id])
-                 elsif params[:unique_url]
-                   Project.where(url: params[:unique_url]).first
-                 end
+      @project = Project.where(url: params[:id] || params[:unique_url]).first
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

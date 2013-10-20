@@ -19,7 +19,7 @@ $(document).ready ->
       else
         Pixastic.process(base_image, current_effect)
 
-    $.ajax type:"PUT", url: $('form')[0].action, data:{project:{baseimage_effect: current_effect}}
+    $.ajax type:"PUT", url: window.location, data:{project:{baseimage_effect: current_effect}}
 
   $("#slider-opacity").slider({orientation: "vertical", value: 50})
   $("#base-image").fadeTo(200, 0.5)
@@ -45,8 +45,17 @@ $(document).ready ->
       $("#controls img").removeClass('active')
       $(this).addClass('active')
 
-  $('#save-button').on 'click', (e) ->
-    $('#form').submit()
+  $("#project_name, #project_url").on "change", (e) ->
+    update= {}
+    what = e.currentTarget
+    update[what.id] = what.value
+    $.ajax
+      type:"PUT"
+      url: window.location
+      data:{project: update}
+      success: (e) ->
+        if what.id is "url"
+          window.location = '/s/'+what.value
 
   $('#new-button').on 'click', (e) ->
     window.location = "/projects/new"
@@ -75,7 +84,7 @@ $(document).ready ->
        img = options.$trigger[0]
        if key == "use_as_base_image"
          $('#base-image').attr 'src', $(img).attr('data-content')
-         $.ajax type:"PUT", url: $('form')[0].action, data:{project:{imagebase_id: $(img).attr('data-id')}}
+         $.ajax type:"PUT", url: window.location, data:{project:{imagebase_id: $(img).attr('data-id')}}
 	 #$('body').scrollTop('#base-image')
        else if key == "delete"
          if confirm('Delete?')
@@ -138,7 +147,8 @@ $(document).ready ->
       thumb_blob = thumb_canvas.toDataURL('image/png')
       $('img#captured-image').attr 'src', blob
 
-      if $('#use_as_base')[0].checked or $("#base-image")[0].src is "/images/default.png"
+      if $('#use_as_base')[0].checked or pictureDefaultYet()
+        console.log $('img#base-image')
         $('img#base-image').attr 'src', blob
 
       $('img#thumbimage').attr 'src', thumb_blob
@@ -151,16 +161,17 @@ $(document).ready ->
       $('body').css({opacity: 0})
       $('body').animate({opacity: 1}, 300 )
 
-  window.firstPic = true
+  pictureDefaultYet = ->
+    img = $("#base-image")[0]
+    (img.src || img.imgsrc).match "/images/default.png$"
   pic = false
   $("#snapshot-button").on "click", ->
     if pic
       this.src = "/images/plussnapbutton.png"
       snapshot()
-      $('#base-image').show()
+      $('#base-image').show() if pictureDefaultYet()
     else
-      if window.firstPic
-        window.firstPic = false
+      if not pictureDefaultYet()
         $('#base-image').hide()
       this.src = "/images/snapbutton.png"
       $('img#captured-image').hide()
@@ -189,4 +200,4 @@ $(document).ready ->
        success: (data) ->
          $('#images-context').append('&nbsp;<img class="image-thumb" src="' +data.thumb_url+ '" data-content="' + data.url+ '" data-id="' + data.id +  '" />')
          if $('#use_as_base')[0].checked
-           $.ajax type:"PUT", url: $('form')[0].action, data:{project:{imagebase_id: data.id}}
+           $.ajax type:"PUT", url: window.location, data:{project:{imagebase_id: data.id}}

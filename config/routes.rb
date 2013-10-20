@@ -5,14 +5,15 @@ Reinventto::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'projects#new'
+  root 'projects#decide'
 
   # Example of regular route:
-  get 's/:unique_url' => 'projects#show'
-  get '/projects/:id/export' => 'projects#export', as: :export
-  post '/projects/:id/add_image' => 'projects#add_image', as: :add_image
-
-  delete '/projects/image/:id' => 'projects#destroy_image'
+  get 's/:unique_url' => 'projects#edit'
+  post 's/:unique_url' => 'projects#update'
+  put 's/:unique_url' => 'projects#update'
+  get 's/:unique_url/export' => 'projects#export'
+  post 's/:unique_url/add_image' => 'projects#add_image'
+  delete 's/image/:id' => 'projects#destroy_image'
 
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
