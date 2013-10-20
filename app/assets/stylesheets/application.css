@@ -76,7 +76,7 @@ body {
 	position: absolute;
 }
 #base-image-wrapper { 
-	z-index: 1;
+	z-index: 2;
 }
 #camera-image { 
 	background-color: #eee;
@@ -93,10 +93,12 @@ body {
 	display: block;
 	height: 500px;
 	width: 500px;
+	z-index: 2;
 }
 #capture video {
 	display: block;
 	height: 500px;
+	z-index: 1;
 }
 #controls {
 	clear: both;
