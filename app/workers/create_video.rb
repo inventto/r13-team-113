@@ -4,6 +4,10 @@ class CreateVideo
     project = Project.find(project_id)
     video_output_path = project.video_output_path
     File.delete project.video_output_path if File.exists? video_output_path
-    `ffmpeg -y -r 1 -pattern_type glob -i '#{File.join(project.dir, "*.png")}' -c:v libx264 -pix_fmt yuv420p #{video_output_path}` 
+    Dir.foreach(Dir.pwd) do |img|
+      `convert -antialias -delay 25 '#{img}' #{img.split(/.png/).first}.mpeg`
+    end
+    `cat *.mpeg | ffmpeg -y -i - #{video_output_path}`
+    `rm -f *.mpeg`
   end
 end
