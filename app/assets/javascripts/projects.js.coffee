@@ -123,15 +123,15 @@ $(document).ready ->
   navigator.getUserMedia  = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
   video = $('#capture video')[0]
   canvas = $('#capture canvas.camera')[0]
-  thumb_canvas = $('#capture canvas.thumb-camera')[0]
-  thumbSize = 128
-  thumb_canvas.width = thumbSize
-  thumb_canvas.height = thumbSize
-  canvas.width = 500
-  canvas.height = 500
-  ctx = canvas.getContext('2d')
-  thumb_ctx = thumb_canvas.getContext('2d')
-  localMediaStream = null
+  if thumb_canvas = $('#capture canvas.thumb-camera')[0]
+    thumbSize = 128
+    thumb_canvas.width = thumbSize
+    thumb_canvas.height = thumbSize
+    canvas.width = 500
+    canvas.height = 500
+    ctx = canvas.getContext('2d')
+    thumb_ctx = thumb_canvas.getContext('2d')
+    localMediaStream = null
 
   snapshot = ->
     if (localMediaStream)
@@ -179,7 +179,8 @@ $(document).ready ->
       $(video).show()
     pic = !pic
 
-  video.addEventListener('click', snapshot, false)
+  if video
+    video.addEventListener('click', snapshot, false)
   sourceStream = (stream) ->
     video.src = window.URL.createObjectURL(stream)
     localMediaStream = stream
@@ -207,5 +208,8 @@ $(document).ready ->
     $('#base-image').show()
     $("#base-image").fadeTo(200, 0.6)
 
-  if applyDefaultEffect
+  $('#slideshow').cycle fx:'fade', continuous:1, timeout:0, easeIn: 'linear', easeOut: 'linear'
+
+  if typeof applyDefaultEffect isnt "undefined"
     applyDefaultEffect()
+

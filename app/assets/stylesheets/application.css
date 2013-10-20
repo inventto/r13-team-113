@@ -190,3 +190,8 @@ li.context-menu-item {
 	-moz-transform: rotateY(180deg);
 	-webkit-transform: rotateY(180deg);
 }
+
+#slideshow {
+  width: 500px;
+  margin: 0 auto;
+}
