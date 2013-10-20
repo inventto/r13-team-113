@@ -21,8 +21,8 @@ $(document).ready ->
 
     $.ajax type:"PUT", url: window.location, data:{project:{baseimage_effect: current_effect}}
 
-  $("#slider-opacity").slider({orientation: "vertical", value: 65})
-  $("#base-image").fadeTo(200, 0.65)
+  $("#slider-opacity").slider({orientation: "vertical", value: 60})
+  $("#base-image").fadeTo(200, 0.6)
   $("#slider-opacity").on "slide", ( event, ui ) ->
     if $('#opacity-type')[0].checked
       Pixastic.revert(document.getElementById("base-image"))
