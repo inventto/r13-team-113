@@ -46,7 +46,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
+        format.html { redirect_to action: :edit, notice: 'Project was successfully created.' }
         format.json { render action: 'show', status: :created, location: @project }
       else
         format.html { render action: 'new' }
@@ -61,7 +61,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       if @project.update(project_params)
         cookies[:unique_url] = @project.url
-        format.html { redirect_to @project, notice: 'Project was successfully updated.' }
+        format.html { redirect_to action: :edit, notice: 'Project was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

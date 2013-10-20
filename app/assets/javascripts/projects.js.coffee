@@ -7,7 +7,6 @@ $(document).ready ->
   $("div[withEffect]").on 'click', (e) ->
     base_image = $("#base-image")[0]
     current_effect = $(e.currentTarget).attr("class")
-    console.log current_effect
     switch current_effect
       when "revert" then Pixastic.revert(base_image)
       when "brightness" then Pixastic.process(base_image, "brightness", {brightness:50,contrast:0})
@@ -19,7 +18,7 @@ $(document).ready ->
       else
         Pixastic.process(base_image, current_effect)
 
-    $.ajax type:"PUT", url: window.location, data:{project:{baseimage_effect: current_effect}}
+    $.ajax type:"PUT", url: window.location + ".json", data:{project:{baseimage_effect: current_effect}}
 
   $("#slider-opacity").slider({orientation: "vertical", value: 60})
   $("#base-image").fadeTo(200, 0.6)
@@ -51,7 +50,7 @@ $(document).ready ->
     update[what.id] = what.value
     $.ajax
       type:"PUT"
-      url: window.location
+      url: window.location + ".json"
       data:{project: update}
       success: (e) ->
         if what.id is "url"
@@ -64,7 +63,7 @@ $(document).ready ->
     window.location = "/projects"
 
   $('#download-button').on 'click', (e) ->
-    window.location = window.location.pathname.replace('edit','export')
+    window.location = window.location + '/export'
 
   $('#images-button').on 'click', (e) ->
     if $(e.currentTarget).hasClass('active')
@@ -85,7 +84,7 @@ $(document).ready ->
        if key == "use_as_base_image"
          $('#base-image').attr 'src', $(img).attr('data-content')
          $('img#base-image').show()
-         $.ajax type:"PUT", url: window.location, data:{project:{imagebase_id: $(img).attr('data-id')}}
+         $.ajax type:"PUT", url: window.location + ".json", data:{project:{imagebase_id: $(img).attr('data-id')}}
 	 #$('body').scrollTop('#base-image')
        else if key == "delete"
          if confirm('Delete?')
@@ -201,8 +200,11 @@ $(document).ready ->
        success: (data) ->
          $('#images-context').append('&nbsp;<img class="image-thumb" src="' +data.thumb_url+ '" data-content="' + data.url+ '" data-id="' + data.id +  '" />')
          if $('#use_as_base')[0].checked
-           $.ajax type:"PUT", url: window.location, data:{project:{imagebase_id: data.id}}
+           $.ajax type:"PUT", url: window.location + ".json", data:{project:{imagebase_id: data.id}}
 
 
   $('video').on 'loadstart', (e) ->
     $('#base-image').show()
+
+  if applyDefaultEffect
+    applyDefaultEffect()

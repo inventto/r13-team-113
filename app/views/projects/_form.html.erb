@@ -1,4 +1,4 @@
-<form action="/s/<%=@project.url%>" id="form" class='form-horizontal'>
+<%= form_for @project, :url => { :action => "edit" }, :html => { :id => "form", :class => 'form-horizontal' } do |f| %>
   <div class="control-group">
     <%= render :partial => 'image' %>
   </div>
@@ -26,17 +26,17 @@
     <div id="config-context" style="display: <%= @project.id ? "none" : "block" %>">
       <h4>Configuration</h4>
       <div class="control-group">
-        <%= label_tag :project, :name, :class => 'control-label' %>
+	<%= f.label :name, :class => 'control-label' %>
         <div class="controls">
-          <%= text_field_tag :project, :name, :class => 'text_field' %>
+	  <%= f.text_field :name, :class => 'text_field' %>
         </div>
       </div>
       <div class="control-group">
-        <%= label_tag :project,:url, :class => 'control-label' %>
+	<%= f.label :url, :class => 'control-label' %>
         <div class="controls">
-          <%= text_field_tag :project, :url, :class => 'text_field' %>
+          <%= f.text_field :url, :class => 'text_field' %>
         </div>
       </div>
     </div>
   </div>
-</form>
+<% end %>

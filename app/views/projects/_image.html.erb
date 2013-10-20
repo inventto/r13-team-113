@@ -27,6 +27,14 @@
     <% else %>
       <%= image_tag "/images/default.png", id: "base-image" %>
     <% end %>
+    <% if @project.baseimage_effect %>
+      <script type="text/javascript">
+	window.applyDefaultEffect = function() {
+	  var effect = <%= @project.baseimage_effect.inspect.html_safe %>;
+	  $("." + effect).click();
+	}
+      </script>
+    <% end %>
     <img id="thumbimage" style="display:none"/>
   </div>
   <div id="camera-image">
