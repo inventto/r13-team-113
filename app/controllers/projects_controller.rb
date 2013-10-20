@@ -18,10 +18,10 @@ class ProjectsController < ApplicationController
   def new
     @project = Project.create name: "My first project", url: "project_#{Project.count+1}"
     if @project.invalid?
-      @project.url = Time.now.to_i
+      @project.url = "project_#{Time.now.to_i}"
       @project.save
     end
-    redirect_to edit_projects_path(@project)
+    redirect_to edit_project_path(@project)
   end
 
   # GET /projects/1/edit
