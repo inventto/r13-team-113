@@ -20,7 +20,7 @@
   <div id="slider-opacity"></div>
   <label><input type="checkbox" id="opacity-type" />Chess</label>
 </div>
-<div id="capture">
+<div id="capture" class="mirror">
   <div id="base-image-wrapper">
     <% if @project.imagebase %>
       <script type="text/javascript">
@@ -39,5 +39,3 @@
     <img id="captured-image" style="display:none"/>
   </div>
 </div>
-<label><input type="checkbox" id="use_as_base" />Use captured image as next base image.</label>
-<label><input type="checkbox" id="mirror" />Mirror Image Camera.</label>

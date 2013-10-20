@@ -170,15 +170,22 @@ h4 {
 	width: 128px;
 	cursor: pointer;
 }
+#images-context div {
+	clear: both;
+	min-height: 30px;
+}
+#images-context label {
+	float: left;
+	margin: 0 10px;
+}
 label {
-	text-align: center;
 	font-weight: bold ! important;
 }
 li.context-menu-item {
 	display: block;
 	padding: 5px 0 0 5px ! important
 }
-.mirror canvas, .mirror img, .mirror video {
+.mirror {
 	transform: rotateY(180deg);
 	-moz-transform: rotateY(180deg);
 	-webkit-transform: rotateY(180deg);
