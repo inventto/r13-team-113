@@ -205,6 +205,7 @@ $(document).ready ->
 
   $('video').on 'loadstart', (e) ->
     $('#base-image').show()
+    $("#base-image").fadeTo(200, 0.6)
 
   if applyDefaultEffect
     applyDefaultEffect()
