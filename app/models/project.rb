@@ -14,6 +14,12 @@ class Project < ActiveRecord::Base
   def dir
     @dir ||= File.join UPLOADS_DIR, self.id.to_s
   end
+  def url_path
+    @url_path ||= "/system/uploads/#{self.id}"
+  end
+  def url_thumb_path
+    @url_thumb_path ||= File.join(url_path, "thumbs")
+  end
   def thumbs_dir
     File.join(dir,"thumbs")
   end

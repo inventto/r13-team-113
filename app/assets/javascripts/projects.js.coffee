@@ -186,5 +186,6 @@ $(document).ready ->
        processData: false,
        contentType: false,
        success: (data) ->
-         console.log("enviou imagem e recebeu ", data.external_path)
-         $('#images-context').append('&nbsp;<img class="image-thumb" src="' +data.external_thumb_path + '" data-content="' + data.external_path + '" data-id="' + data.id +  '" />')
+         $('#images-context').append('&nbsp;<img class="image-thumb" src="' +data.thumb_url+ '" data-content="' + data.url+ '" data-id="' + data.id +  '" />')
+         if base_image.src is "/images/default.png"
+           base_image.src = data.url
