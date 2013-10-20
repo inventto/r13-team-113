@@ -82,7 +82,7 @@ class ProjectsController < ApplicationController
   # POST /projects/1/add_image
   def add_image
     @project.mkdir_images_dir
-    @image = Image.create path: "", project: @project
+    @image = Image.create filename: "", project: @project
     img_name = "#{ "%09d" % @image.id}.png"
     image_file = File.join(@project.dir, img_name)
     File.open(image_file, 'wb') do |f|
@@ -92,10 +92,10 @@ class ProjectsController < ApplicationController
     File.open(thumb_file, 'wb') do |f|
       f.write(decode_from_param :thumb)
     end
-    @image.path = image_file
+    @image.filename = img_name
     @image.save
     respond_to do |format|
-      format.json { render json: @image.to_json(:methods => [:external_path, :external_thumb_path]) }
+      format.json { render json: @image.to_json(:methods => [:url, :thumb_url]) }
     end
   end
   def export

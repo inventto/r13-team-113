@@ -137,8 +137,9 @@ $(document).ready ->
       blob =  canvas.toDataURL('image/png')
       thumb_blob = thumb_canvas.toDataURL('image/png')
       $('img#captured-image').attr 'src', blob
-      if $('#use_as_base')[0].checked
+      if $('#use_as_base')[0].checked or base_image.src is "/images/default.png"
         $('img#base-image').attr 'src', blob
+
       $('img#thumbimage').attr 'src', thumb_blob
 
       uploadImageFromBlob blob, thumb_blob
@@ -185,7 +186,6 @@ $(document).ready ->
        processData: false,
        contentType: false,
        success: (data) ->
-         $('#images-context').append('&nbsp;<img class="image-thumb" src="' +data.external_thumb_path + '" data-content="' + data.external_path + '" data-id="' + data.id +  '" />')
-
+         $('#images-context').append('&nbsp;<img class="image-thumb" src="' +data.thumb_url+ '" data-content="' + data.url+ '" data-id="' + data.id +  '" />')
          if $('#use_as_base')[0].checked
            $.ajax type:"PUT", url: $('form')[0].action, data:{project:{imagebase_id: data.id}}

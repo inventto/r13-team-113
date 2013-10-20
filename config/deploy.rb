@@ -86,6 +86,7 @@ deploy.task :restart, :roles => :app do
   sudo "chown -R www-data:www-data #{latest_release}"
   sudo "chown -R www-data:www-data #{shared_path}/bundle"
   sudo "chown -R www-data:www-data #{shared_path}/log"
+  sudo "chown -R www-data:www-data #{shared_path}/db"
  
   # Restart Application
   run "touch #{current_path}/tmp/restart.txt"

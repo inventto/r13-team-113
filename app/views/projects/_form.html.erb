@@ -20,7 +20,7 @@
         <label><input type="checkbox" id="mirror" checked="checked" />Mirror Camera.</label>
       </div>
       <% @project.images.each do |image| %>
-        <img class="image-thumb" src="<%= image.external_thumb_path %>" data-content="<%= image.external_path %>" data-id="<%= image.id %>" />
+        <img class="image-thumb" src="<%= image.thumb_url%>" data-content="<%= image.url %>" data-id="<%= image.id %>" />
       <% end %>
     </div>
     <div id="config-context" style="display: <%= @project.id ? "none" : "block" %>">
