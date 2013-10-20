@@ -62,6 +62,18 @@ class ProjectsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  # DELETE /projects/image/1
+  # DELETE /projects/image/1.json
+  def destroy_image
+    @image = Image.find(params[:id])
+    @image.destroy
+    respond_to do |format|
+      format.html { head :no_content }
+      format.json { head :no_content }
+    end
+  end
+
   # POST /projects/1/add_image
   def add_image
     @project.mkdir_images_dir
@@ -98,6 +110,6 @@ class ProjectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def project_params
-      params.require(:project).permit(:name, :url, :baseimage_effect)
+      params.require(:project).permit(:name, :url, :baseimage_effect, :imagebase_id)
     end
 end

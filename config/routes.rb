@@ -12,6 +12,8 @@ Reinventto::Application.routes.draw do
   get '/projects/:id/export' => 'projects#export', as: :export
   post '/projects/:id/add_image' => 'projects#add_image', as: :add_image
 
+  delete '/projects/image/:id' => 'projects#destroy_image'
+
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 

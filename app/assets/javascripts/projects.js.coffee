@@ -2,9 +2,12 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).ready ->
-  base_image = $("#base-image")[0]
+  Pixastic.init()
+
   $("div[withEffect]").on 'click', (e) ->
-    current_effect = e.attr("class")[0]
+    base_image = $("#base-image")[0]
+    current_effect = $(e.currentTarget).attr("class")
+    console.log current_effect
     switch current_effect
       when "revert" then Pixastic.revert(base_image)
       when "brightness" then Pixastic.process(base_image, "brightness", {brightness:50,contrast:0})
@@ -67,9 +70,11 @@ $(document).ready ->
        img = options.$trigger[0]
        if key == "use_as_base_image"
          $('#base-image').attr 'src', $(img).attr('data-content')
+         $.ajax type:"PUT", url: $('form')[0].action, data:{project:{imagebase_id: $(img).attr('data-id')}}
        else if key == "delete"
-         img.remove()
-         alert('TODO: call delete -> ' + $(img).attr('data-id'))
+         if confirm('Delete?')
+           img.remove()
+           $.ajax type:"DELETE", url: "/projects/image/" + $(img).attr('data-id')
      items:
        "use_as_base_image":
          name: "Use as Base Image"
