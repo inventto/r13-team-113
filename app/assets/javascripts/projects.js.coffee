@@ -89,7 +89,7 @@ $(document).ready ->
        else if key == "delete"
          if confirm('Delete?')
            img.remove()
-           $.ajax type:"DELETE", url: "/projects/image/" + $(img).attr('data-id')
+           $.ajax type:"DELETE", url: "/s/image/" + $(img).attr('data-id')
      items:
        "use_as_base_image": {
          name: " Base Image",
