@@ -98,4 +98,4 @@ set :workers, :create_video => 5
 deploy.task :root_resque_restart, :roles => [:resque_worker, :resque_scheduler] do
   sudo "if [ -e /var/www/apps/railsrumble/current/tmp/pids/resque_work_1.pid ]; then for f in `ls #{shared_path}/pids/resque_work*.pid`;  do kill -9 `cat $f` && rm $f ;done ;fi"
 end
-after "deploy:restart", "root_resque_restart"
+after "deploy:restart", :root_resque_restart
