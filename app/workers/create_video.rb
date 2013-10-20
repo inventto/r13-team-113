@@ -1,4 +1,4 @@
-Resque.logger = Logger.new("resque_log_file.log")
+Resque.logger = Logger.new("log/resque_log_file.log")
 class CreateVideo
   @queue = :create_video
   def self.perform(project_id)
