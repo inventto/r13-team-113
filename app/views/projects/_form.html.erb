@@ -15,6 +15,10 @@
   <div id="context-container">
     <div id="images-context" style="display: <%= @project.id ? "block" : "none" %>">
       <h4>Images</h4>
+      <div>
+        <label><input type="checkbox" id="use_as_base" />Update base image each capture.</label>
+        <label><input type="checkbox" id="mirror" />Mirror Camera.</label>
+      </div>
       <% @project.images.each do |image| %>
         <img class="image-thumb" src="<%= image.external_thumb_path %>" data-content="<%= image.external_path %>" data-id="<%= image.id %>" />
       <% end %>
@@ -33,6 +37,7 @@
           <%= f.text_field :url, :class => 'text_field' %>
         </div>
       </div>
+
     </div>
   </div>
 <!-- 

@@ -143,7 +143,6 @@ $(document).ready ->
 
       uploadImageFromBlob blob, thumb_blob
 
-      $('img#thumbimage').hide()
       $('img#captured-image').show()
       $(video).hide()
       load_thumb_effects()
@@ -186,5 +185,7 @@ $(document).ready ->
        processData: false,
        contentType: false,
        success: (data) ->
-         console.log("enviou imagem e recebeu ", data.external_path)
          $('#images-context').append('&nbsp;<img class="image-thumb" src="' +data.external_thumb_path + '" data-content="' + data.external_path + '" data-id="' + data.id +  '" />')
+
+         if $('#use_as_base')[0].checked
+           $.ajax type:"PUT", url: $('form')[0].action, data:{project:{imagebase_id: data.id}}
