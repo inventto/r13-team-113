@@ -5,7 +5,7 @@ Reinventto::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'projects#index'
+  root 'projects#new'
 
   # Example of regular route:
   get 's/:unique_url' => 'projects#show'
