@@ -6,6 +6,7 @@
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:images) %></th>
       <th><%= model_class.human_attribute_name(:name) %></th>
       <th><%= model_class.human_attribute_name(:url) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
@@ -16,12 +17,23 @@
     <% @projects.each do |project| %>
       <tr>
         <td><%= link_to project.id, project_path(project) %></td>
+	<td>
+	<% [0,1,2].each do |index|
+           if project.images[index] %>
+		<img src="<%= project.images[index].thumb_url %>" style="height: 64px"/>
+	<% end
+	end%>
+	<% if project.images.size > 3 %>
+		...
+	<% end %>
+	</td>
         <td><%= project.name %></td>
         <td><%= project.url %></td>
         <td><%=l project.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_project_path(project), :class => 'btn btn-mini' %>
+		  {:action => :edit,
+		  :unique_url => project.url}, :class => 'btn btn-mini' %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                       project_path(project),
                       :method => :delete,
