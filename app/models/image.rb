@@ -8,13 +8,4 @@ class Image < ActiveRecord::Base
   def thumb_url
     File.join(project.thumbs_dir, path)
   end
-  def external_path
-    path =~ /.*(\/\d*\/[^\/]*)$/
-    "/images/uploads#{$1}"
-  end
-  def external_thumb_path
-    path =~ /.*(\/\d*)\/([^\/]*)$/
-    "/images/uploads#{$1}/thumbs/#{$2}"
-  end
-
 end

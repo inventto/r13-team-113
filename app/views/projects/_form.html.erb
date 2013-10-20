@@ -16,7 +16,7 @@
     <div id="images-context" style="display: <%= @project.id ? "block" : "none" %>">
       <h4>Images</h4>
       <% @project.images.each do |image| %>
-        <img class="image-thumb" src="<%= image.external_thumb_path %>" data-content="<%= image.external_path %>" data-id="<%= image.id %>" />
+        <img class="image-thumb" src="<%= image.thumb_url%>" data-content="<%= image.url %>" data-id="<%= image.id %>" />
       <% end %>
     </div>
     <div id="config-context" style="display: <%= @project.id ? "none" : "block" %>">
