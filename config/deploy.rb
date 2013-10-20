@@ -97,4 +97,5 @@ role :resque_scheduler, LINODE_SERVER_HOSTNAME
 set :workers, :create_video => 5
 after "deploy:restart" do
   sudo "if [ -e /var/www/apps/railsrumble/current/tmp/pids/resque_work_1.pid ]; then for f in `ls #{shared_path}/pids/resque_work*.pid`;  do kill -9 `cat $f` && rm $f ;done ;fi"
+  sudo "cd #{release_path} bundle exec rake resque:work; bundle exec rake resque:scheduler"
 end
