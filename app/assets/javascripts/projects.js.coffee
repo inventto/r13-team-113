@@ -84,6 +84,7 @@ $(document).ready ->
        img = options.$trigger[0]
        if key == "use_as_base_image"
          $('#base-image').attr 'src', $(img).attr('data-content')
+         $('img#base-image').show()
          $.ajax type:"PUT", url: window.location, data:{project:{imagebase_id: $(img).attr('data-id')}}
 	 #$('body').scrollTop('#base-image')
        else if key == "delete"
@@ -148,8 +149,8 @@ $(document).ready ->
       $('img#captured-image').attr 'src', blob
 
       if $('#use_as_base')[0].checked or pictureDefaultYet()
-        console.log $('img#base-image')
         $('img#base-image').attr 'src', blob
+        $('img#base-image').show()
 
       $('img#thumbimage').attr 'src', thumb_blob
 
@@ -171,7 +172,7 @@ $(document).ready ->
       snapshot()
       $('#base-image').show() if pictureDefaultYet()
     else
-      if not pictureDefaultYet()
+      if pictureDefaultYet()
         $('#base-image').hide()
       this.src = "/images/snapbutton.png"
       $('img#captured-image').hide()
@@ -192,7 +193,7 @@ $(document).ready ->
      fd.append("image", blob)
      fd.append("thumb", thumb_blob)
      $.ajax
-       url: window.location.pathname.replace('edit','add_image'),
+       url: window.location + '/add_image',
        data: fd,
        type: 'POST',
        processData: false,
