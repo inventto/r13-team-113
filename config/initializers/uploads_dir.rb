@@ -1,5 +1,5 @@
 UPLOADS_DIR =  if Rails.env.production?
-                 "/var/www/apps/railsrumble/shared/images/uploads"
+                 Rails.root.join("public","system", "uploads")
                else
                  Rails.root.join("public","images", "uploads")
                end
