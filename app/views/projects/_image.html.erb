@@ -26,7 +26,7 @@
       <script type="text/javascript">
         window.firstPic = false;
       </script>
-      <%= image_tag @project.imagebase.external_path, id: "base-image" %>
+      <%= image_tag @project.imagebase.url, id: "base-image" %>
     <% else %>
       <%= image_tag "/images/default.png", id: "base-image" %>
     <% end %>
