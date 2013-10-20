@@ -77,7 +77,8 @@ class ProjectsController < ApplicationController
   # POST /projects/1/add_image
   def add_image
     @project.mkdir_images_dir
-    img_name = "#{ "%06d" % (@project.images.count + 1).to_s}.png"
+    @image = Image.create path: "", project: @project
+    img_name = "#{ "%09d" % @image.id}.png"
     image_file = File.join(@project.dir, img_name)
     File.open(image_file, 'wb') do |f|
       f.write(decode_from_param :image)
@@ -86,7 +87,8 @@ class ProjectsController < ApplicationController
     File.open(thumb_file, 'wb') do |f|
       f.write(decode_from_param :thumb)
     end
-    @image = Image.create path: image_file, project: @project
+    @image.path = image_file
+    @image.save
     respond_to do |format|
       format.json { render json: @image.to_json(:methods => [:external_path, :external_thumb_path]) }
     end
