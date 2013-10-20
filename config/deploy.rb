@@ -94,4 +94,5 @@ end
 role :resque_worker, LINODE_SERVER_HOSTNAME
 role :resque_scheduler, LINODE_SERVER_HOSTNAME
 
-set :workers, { "my_queue_name" => 2 }
+set :workers, create_video: 5
+after "deploy:restart", "resque:restart"
