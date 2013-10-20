@@ -157,6 +157,10 @@ body {
 h1 {
 	margin: 10px 0 0 ! important;
 }
+h4 {
+	display: block ! important;
+	clear: both;
+}
 .table td:last-child {
 	width: 90px;
 }
