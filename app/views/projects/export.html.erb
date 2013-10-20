@@ -1,0 +1,7 @@
+<h1>Exporting video!</h1>
+
+<p>Access the link with your video <%= link_to "here", @project.video_url %></p>
+
+<p>Or wait to watch here: </p>
+
+<video src="<%= @project.video_url %>" id="output_video"></video>

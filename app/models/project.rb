@@ -29,6 +29,9 @@ class Project < ActiveRecord::Base
       self.save
     end
   end
+  def video_url
+    @video_url ||= File.join(url_path, "#{url}.mp4")
+  end
   def video_output_path
     @video_output_path ||= File.join(dir, "#{url}.mp4")
   end

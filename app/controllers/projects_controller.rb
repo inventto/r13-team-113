@@ -111,7 +111,7 @@ class ProjectsController < ApplicationController
     end
   end
   def export
-    send_file @project.render_video!
+    @project.render_video!
   end
 
   private
