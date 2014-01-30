@@ -6,9 +6,7 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-
     @projects = Project.all
-
   end
   def decide
     if cookies[:unique_url]
