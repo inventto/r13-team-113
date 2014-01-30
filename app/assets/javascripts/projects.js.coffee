@@ -259,6 +259,7 @@ class Countdown
     @functionToExecuteOnFinish = executeThisFunction
 
   reset: ->
+    @stopped = false
     @minutes = parseInt(@start_time / Timeframe.minutes)
     @seconds = parseInt((@start_time % Timeframe.minutes) / Timeframe.seconds)
     @updateTarget()
