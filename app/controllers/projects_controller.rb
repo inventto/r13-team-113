@@ -93,21 +93,10 @@ class ProjectsController < ApplicationController
 
   # POST /projects/1/add_image
   def add_image
-    @project.mkdir_images_dir
-    @image = Image.create filename: "", project: @project
-    img_name = "#{ "%09d" % @image.id}.png"
-    image_file = File.join(@project.dir, img_name)
-    File.open(image_file, 'wb') do |f|
-      f.write(decode_from_param :image)
-    end
-    thumb_file = File.join(@project.thumbs_dir, img_name)
-    File.open(thumb_file, 'wb') do |f|
-      f.write(decode_from_param :thumb)
-    end
-    @image.filename = img_name
-    @image.save
+    Resque.enqueue(SaveImage, params[:project_id], decode_from_param(:image), decode_from_param(:thumb))
+    image = Image.where(project_id: params[:project_id]).last
     respond_to do |format|
-      format.json { render json: @image.to_json(:methods => [:url, :thumb_url]) }
+      format.json { render json: image.to_json(:methods => [:url, :thumb_url]) }
     end
   end
   def export
