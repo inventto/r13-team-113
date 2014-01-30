@@ -44,6 +44,27 @@ $(document).ready ->
       $("#controls img").removeClass('active')
       $(this).addClass('active')
 
+  calculateMiliseconds = ->
+    console.log("calculateMiliseconds",$("#take_picture_step").val(), "*", Timeframe, $("#take_picture_timeframe").val())
+    parseInt($("#take_picture_step").val()) * Timeframe[$("#take_picture_timeframe").val()]
+
+  $('#start_taking_pictures').on 'click', (e) ->
+
+      if pictureDefaultYet()
+        $('#base-image').hide()
+      window.timer = new Countdown('#countdown_timer', calculateMiliseconds())
+      timer.init()
+      timer.onFinish(snapshot)
+      $('#stop_taking_pictures').show()
+      $('#start_taking_pictures').hide()
+
+  $('#stop_taking_pictures').on 'click', (e) ->
+    window.timer.stop()
+    $("#countdown_timer").html("--:--")
+    $('#start_taking_pictures').show()
+    $('#stop_taking_pictures').hide()
+    window.timer = null
+
   $("#project_name, #project_url").on "change", (e) ->
     update= {}
     what = e.currentTarget
@@ -161,6 +182,13 @@ $(document).ready ->
       $('body').css({opacity: 0})
       $('body').animate({opacity: 1}, 300 )
 
+    if window.timer
+      timer.init()
+
+      $('img#captured-image').hide()
+      $('img#thumbimage').hide()
+      $(video).show()
+
   pictureDefaultYet = ->
     img = $("#base-image")[0]
     (img.src || img.imgsrc).match "/images/default.png$"
@@ -213,3 +241,50 @@ $(document).ready ->
   if typeof applyDefaultEffect isnt "undefined"
     applyDefaultEffect()
 
+
+class Countdown
+  constructor: (@target_id = "#timer", @start_time = 20000) ->
+
+  init: ->
+    @reset()
+    window.tick = =>
+      @tick()
+    @intervalId = setInterval(window.tick, 1000)
+
+  stop: ->
+    clearInterval(@intervalId)
+    @stopped = true
+
+  onFinish: (executeThisFunction) ->
+    @functionToExecuteOnFinish = executeThisFunction
+
+  reset: ->
+    @stopped = false
+    @minutes = parseInt(@start_time / Timeframe.minutes)
+    @seconds = parseInt((@start_time % Timeframe.minutes) / Timeframe.seconds)
+    @updateTarget()
+
+  tick: ->
+    return if @stopped
+    [seconds, minutes] = [@seconds, @minutes]
+    if seconds > 0 or minutes > 0
+      if seconds is 0
+        @minutes = minutes - 1
+        @seconds = 59
+      else
+        @seconds = seconds - 1
+    @updateTarget()
+    if seconds is 0 and minutes is 0
+      @stop()
+      if @functionToExecuteOnFinish
+        @functionToExecuteOnFinish()
+
+  updateTarget: ->
+    seconds = @seconds
+    seconds = '0' + seconds if seconds < 10
+    $(@target_id).html(@minutes + ":" + seconds)
+
+Timeframe = seconds: 1000
+Timeframe['minutes'] = 60 * Timeframe.seconds
+Timeframe['hours']   = 60 * Timeframe.minutes
+Timeframe['days']    = 24 * Timeframe.hours
