@@ -32,7 +32,7 @@ require 'rvm/capistrano'
 ##                                         ##
 #############################################
  
-SERVER_NAME = '107.170.19.251'
+SERVER_NAME = 're.invent.to' #107.170.19.251'
  
 #############################################
 #############################################
@@ -69,7 +69,7 @@ ssh_options[:keys] = ["~/.ssh/id_rsa"]
 set :scm,        :git
 set :repository, "git@github.com:inventto/reinventto.git"
 set :branch,     "master"
- 
+
 # Roles
 role :app, SERVER_NAME
 role :db,  SERVER_NAME, :primary => true
