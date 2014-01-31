@@ -57,7 +57,3 @@ group :development, :test do
   gem 'turn'
   gem 'pry'
 end
-
-group :assets do
-  gem 'therubyracer', platforms: :ruby
-end
