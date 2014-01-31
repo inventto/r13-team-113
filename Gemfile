@@ -52,6 +52,7 @@ gem 'rvm-capistrano'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 gem 'google-analytics-rails'
+gem 'thin'
 group :development, :test do
   gem 'turn'
   gem 'pry'
