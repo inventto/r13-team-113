@@ -73,6 +73,22 @@ set :branch,     "master"
 # Roles
 role :app, SERVER_NAME
 role :db,  SERVER_NAME, :primary => true
+namespace :deploy do
+  desc "Start the Thin processes"
+  task :start do
+    sudo "bundle exec thin start -C thin.yml"
+  end
+
+  desc "Stop the Thin processes"
+  task :stop do
+    sudo "bundle exec thin stop -C thin.yml"
+  end
+
+  desc "Restart the Thin processes"
+  task :restart do
+    sudo "bundle exec thin restart -C thin.yml"
+  end
+end
 
 # Add Configuration Files & Compile Assets
 after 'deploy:update_code' do
