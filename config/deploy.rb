@@ -74,8 +74,6 @@ set :branch,     "master"
 role :app, SERVER_NAME
 role :db,  SERVER_NAME, :primary => true
 
-set :port, 5000
- 
 # Add Configuration Files & Compile Assets
 after 'deploy:update_code' do
   # Setup Configuration
