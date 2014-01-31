@@ -21,7 +21,6 @@ gem "less-rails"
 gem 'capistrano'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -56,4 +55,8 @@ gem 'google-analytics-rails'
 group :development, :test do
   gem 'turn'
   gem 'pry'
+end
+
+group :assets do
+  gem 'therubyracer', platforms: :ruby
 end
