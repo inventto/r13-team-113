@@ -31,8 +31,7 @@ require 'bundler/capistrano'
 ##                                         ##
 #############################################
  
-GITHUB_REPOSITORY_NAME = 'r13-team-113'
-LINODE_SERVER_HOSTNAME = '173.230.156.250'
+SERVER_NAME = '107.170.19.251'
  
 #############################################
 #############################################
@@ -41,8 +40,8 @@ LINODE_SERVER_HOSTNAME = '173.230.156.250'
  
 set :bundle_flags,               "--deployment"
  
-set :application,                "railsrumble"
-set :deploy_to,                  "/var/www/apps/railsrumble"
+set :application,                "reinventto"
+set :deploy_to,                  "/var/www/apps/reinventto"
 set :normalize_asset_timestamps, false
 set :rails_env,                  "production"
  
@@ -55,20 +54,20 @@ set :admin_runner,               "www-data"
 # 1. Locate your local public SSH key file. (Usually ~/.ssh/id_rsa.pub)
 # 2. Execute the following locally: (You'll need your Linode server's root password.)
 #
-#    cat ~/.ssh/id_rsa.pub | ssh root@LINODE_SERVER_HOSTNAME "cat >> ~/.ssh/authorized_keys"
+#    cat ~/.ssh/id_rsa.pub | ssh root@SERVER_NAME "cat >> ~/.ssh/authorized_keys"
 #
 # 3. Uncomment the below ssh_options[:keys] line in this file.
 #
-# ssh_options[:keys] = ["~/.ssh/id_rsa"]
+ssh_options[:keys] = ["~/.ssh/id_rsa"]
  
 # SCM Options
 set :scm,        :git
-set :repository, "git@github.com:railsrumble/#{GITHUB_REPOSITORY_NAME}.git"
+set :repository, "git@github.com:inventto/reinventto.git"
 set :branch,     "master"
  
 # Roles
-role :app, LINODE_SERVER_HOSTNAME
-role :db,  LINODE_SERVER_HOSTNAME, :primary => true
+role :app, SERVER_NAME
+role :db,  SERVER_NAME, :primary => true
  
 # Add Configuration Files & Compile Assets
 after 'deploy:update_code' do
@@ -91,8 +90,8 @@ deploy.task :restart, :roles => :app do
   # Restart Application
   run "touch #{current_path}/tmp/restart.txt"
 end
-role :resque_worker, LINODE_SERVER_HOSTNAME
-role :resque_scheduler, LINODE_SERVER_HOSTNAME
+role :resque_worker, SERVER_NAME
+role :resque_scheduler, SERVER_NAME
 
 set :workers, :create_video => 2
 after "deploy:restart", "resque:restart"
