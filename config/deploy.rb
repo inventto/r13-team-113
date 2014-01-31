@@ -1,4 +1,5 @@
 require 'bundler/capistrano'
+require 'rvm/capistrano'
  
 # This capistrano deployment recipe is made to work with the optional
 # StackScript provided to all Rails Rumble teams in their Linode dashboard.
@@ -48,6 +49,10 @@ set :rails_env,                  "production"
 set :user,                       "root"
 set :runner,                     "www-data"
 set :admin_runner,               "www-data"
+
+
+set :rvm_ruby_string, 'ruby-2.1.0'
+set :rvm_type, :system
  
 # Password-less Deploys (Optional)
 #

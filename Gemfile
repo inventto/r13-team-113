@@ -45,6 +45,7 @@ end
 gem 'unicorn'
 gem 'resque'
 gem "capistrano-resque", "~> 0.1.0"
+gem 'rvm-capistrano'
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
