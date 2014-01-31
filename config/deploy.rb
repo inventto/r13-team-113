@@ -81,6 +81,7 @@ after 'deploy:update_code' do
  
   # Compile Assets
   run "cd #{release_path}; RAILS_ENV=production bundle exec rake assets:precompile"
+  run "ln -nfs #{shared_path}/images/uploads #{release_path}/public/images/uploads"
 end
  
 # Restart Passenger
