@@ -128,6 +128,8 @@ GEM
       rufus-scheduler (~> 2.0)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
+    rvm-capistrano (1.4.1)
+      capistrano (>= 2.0.0)
     sass (3.2.12)
     sass-rails (4.0.1)
       railties (>= 4.0.0, < 5.0)
@@ -196,6 +198,7 @@ DEPENDENCIES
   pry
   rails (= 4.0.0)
   resque
+  rvm-capistrano
   sass-rails (~> 4.0.0)
   sdoc
   sqlite3
