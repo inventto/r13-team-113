@@ -53,7 +53,6 @@ gem 'rvm-capistrano'
 # gem 'debugger', group: [:development, :test]
 gem 'google-analytics-rails'
 group :development, :test do
-  gem 'sqlite3'
   gem 'turn'
   gem 'pry'
 end
