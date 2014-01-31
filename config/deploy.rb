@@ -51,7 +51,7 @@ set :runner,                     "www-data"
 set :admin_runner,               "www-data"
 
 
-set :rvm_ruby_string, 'ruby-2.1.0'
+set :rvm_ruby_string, 'ruby-2.0.0-p0'
 set :rvm_type, :system
  
 # Password-less Deploys (Optional)
