@@ -68,8 +68,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # DELETE /projects/1
-  # DELETE /projects/1.json
   def destroy
     @project.destroy
     respond_to do |format|
@@ -78,8 +76,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # DELETE /projects/image/1
-  # DELETE /projects/image/1.json
   def destroy_image
     @image = Image.find(params[:id])
     @image.destroy
@@ -89,10 +85,22 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # POST /projects/1/add_image
   def add_image
-    Resque.enqueue(SaveImage, params[:project_id], decode_from_param(:image), decode_from_param(:thumb))
-    image = Image.where(project_id: params[:project_id]).last
+    @project = Project.where(url: params[:unique_url]).first
+    project = Project.find@project.id 
+    image = project.images.create filename: "#{ project.images.count + 1 }.png"
+    image_file = File.join(image.project.dir, image.filename)
+    File.open(image_file, 'wb') do |f|
+      f.write(decode_from_param(:image))
+    end
+    thumb_file = File.join(image.project.thumbs_dir, image.filename)
+    File.open(thumb_file, 'wb') do |f|
+      f.write(decode_from_param(:thumb))
+    end
+    if params[:use_as_base_image] 
+      project.imagebase = image
+      project.save
+    end
     respond_to do |format|
       format.json { render json: image.to_json(:methods => [:url, :thumb_url]) }
     end

@@ -220,6 +220,10 @@ $(document).ready ->
      fd = new FormData()
      fd.append("image", blob)
      fd.append("thumb", thumb_blob)
+
+     if $('#use_as_base')[0].checked
+       fd.append("use_as_base_image", true)
+
      $.ajax
        url: window.location + '/add_image',
        data: fd,
@@ -227,19 +231,21 @@ $(document).ready ->
        processData: false,
        contentType: false,
        success: (data) ->
-         $('#images-context').append('&nbsp;<img class="image-thumb" src="' +data.thumb_url+ '" data-content="' + data.url+ '" data-id="' + data.id +  '" />')
-         if $('#use_as_base')[0].checked
-           $.ajax type:"PUT", url: window.location + ".json", data:{project:{imagebase_id: data.id}}
+         $('.slideshow').append('&nbsp;<img class="image-thumb" src="data:image/png;base64'+thumb_blob+ '" data-content="' + data.url+ '" data-id="' + data.id +  '" />')
+         slideShowIt()
 
 
   $('video').on 'loadstart', (e) ->
     $('#base-image').show()
     $("#base-image").fadeTo(200, 0.6)
 
-  $('#slideshow').cycle fx:'fade', continuous:1, timeout:0, easeIn: 'linear', easeOut: 'linear'
+  slideShowIt()
 
   if typeof applyDefaultEffect isnt "undefined"
     applyDefaultEffect()
+
+slideShowIt = ->
+  $('.slideshow').cycle fx:'fade', speed: ($(".slideshow > img").length / 24) * 1000, continuous:1, timeout:0, easeIn: 'linear', easeOut: 'linear'
 
 
 class Countdown
