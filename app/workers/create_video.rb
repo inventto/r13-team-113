@@ -9,8 +9,10 @@ class CreateVideo
     begin
       File.delete project.video_output_path if File.exists? video_output_path
       Dir.foreach(project.dir) do |img|
+        Resque.logger.info "convert -antialias -delay 25 '#{img}' #{img.split(/\.png$/).first}.mpeg"
         `convert -antialias -delay 25 '#{img}' #{img.split(/\.png$/).first}.mpeg`
       end
+      Resque.logger.info "cat #{project.dir}/*.mpeg | ffmpeg -y -i - #{video_output_path}"
       `cat #{project.dir}/*.mpeg | ffmpeg -y -i - #{video_output_path}`
       `rm -f #{project.dir}/*.mpeg`
     rescue
