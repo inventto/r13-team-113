@@ -49,7 +49,6 @@ $(document).ready ->
     parseInt($("#take_picture_step").val()) * Timeframe[$("#take_picture_timeframe").val()]
 
   $('#start_taking_pictures').on 'click', (e) ->
-
       if pictureDefaultYet()
         $('#base-image').hide()
       window.timer = new Countdown('#countdown_timer', calculateMiliseconds())
@@ -154,6 +153,12 @@ $(document).ready ->
     thumb_ctx = thumb_canvas.getContext('2d')
     localMediaStream = null
 
+  snapshotAndContinue = ->
+    snapshot()
+    $('img#captured-image').hide()
+    $('img#thumbimage').hide()
+    $(video).show()
+
   snapshot = ->
     if (localMediaStream)
       diffH = video.clientHeight - canvas.height
@@ -182,6 +187,7 @@ $(document).ready ->
       $('body').css({opacity: 0})
       $('body').animate({opacity: 1}, 300 )
 
+
     if window.timer
       timer.init()
 
@@ -197,7 +203,6 @@ $(document).ready ->
     if pic
       this.src = "/images/plussnapbutton.png"
       snapshot()
-      $('#base-image').show() if pictureDefaultYet()
     else
       if pictureDefaultYet()
         $('#base-image').hide()
@@ -243,6 +248,13 @@ $(document).ready ->
 
   if typeof applyDefaultEffect isnt "undefined"
     applyDefaultEffect()
+
+  if annyang
+    annyang.debug()
+    annyang.addCommands('photo': snapshotAndContinue)
+    annyang.setLanguage('en')
+    annyang.start()
+
 
 slideShowIt = ->
   $('.slideshow').cycle fx:'fade', speed: ($(".slideshow > img").length / 24) * 1000, continuous:1, timeout:0, easeIn: 'linear', easeOut: 'linear'
