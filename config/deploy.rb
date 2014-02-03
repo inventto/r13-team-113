@@ -73,45 +73,40 @@ set :branch,     "master"
 # Roles
 role :app, SERVER_NAME
 role :db,  SERVER_NAME, :primary => true
+# Add Configuration Files & Compile Assets
 namespace :deploy do
-  desc "Start the Thin processes"
-  task :start do
-    sudo "bundle exec thin start -C thin.yml"
-  end
-
-  desc "Stop the Thin processes"
+  desc "Stopping thin"
   task :stop do
-    sudo "bundle exec thin stop -C thin.yml"
+    run "source ~/.bashrc; cd #{current_path} && thin stop"
   end
-
-  desc "Restart the Thin processes"
+  desc "Starting thin"
+  task :start  do
+    run "source ~/.bashrc; cd #{current_path} && bundle exec thin start -p 3000 -e production -d"
+  end
   task :restart do
-    sudo "bundle exec thin restart -C thin.yml"
+    stop
+    start
   end
 end
 
-# Add Configuration Files & Compile Assets
 after 'deploy:update_code' do
   # Setup Configuration
   run "cp #{shared_path}/config/database.yml #{release_path}/config/database.yml"
  
   # Compile Assets
+
   run "cd #{release_path}; RAILS_ENV=production bundle exec rake assets:precompile"
-  run "ln -nfs #{shared_path}/images/uploads #{release_path}/public/images/uploads"
-end
- 
-# Restart Passenger
-deploy.task :restart, :roles => :app do
-  # Fix Permissions
   sudo "chown -R www-data:www-data #{current_path}"
   sudo "chown -R www-data:www-data #{latest_release}"
   sudo "chown -R www-data:www-data #{shared_path}/bundle"
   sudo "chown -R www-data:www-data #{shared_path}/log"
   sudo "chown -R www-data:www-data #{shared_path}/db"
- 
-  # Restart Application
-  run "touch #{current_path}/tmp/restart.txt"
+  run "ln -nfs #{shared_path}/uploads #{release_path}/public/system/uploads"
+  run "ln -nfs #{shared_path}/db/production.sqlite3 #{release_path}/db/production.sqlite3"
+  run "ln -nfs #{shared_path}/db/production.sqlite3 #{release_path}/db/development.sqlite3"
+
 end
+ 
 role :resque_worker, SERVER_NAME
 role :resque_scheduler, SERVER_NAME
 
