@@ -179,7 +179,8 @@ $(document).ready ->
 
       $('img#thumbimage').attr 'src', thumb_blob
 
-      uploadImageFromBlob blob, thumb_blob
+      image = new BlobImage(blob, thumb)
+      picsCounter.uploadImage image
 
       $('img#captured-image').show()
       $(video).hide()
@@ -221,10 +222,39 @@ $(document).ready ->
   onFailSoHard = -> {}
   navigator.getUserMedia video: true, sourceStream, onFailSoHard
 
-  uploadImageFromBlob = (blob, thumb_blob) ->
+
+
+  $('video').on 'loadstart', (e) ->
+    $('#base-image').show()
+    $("#base-image").fadeTo(200, 0.6)
+
+
+  if typeof applyDefaultEffect isnt "undefined"
+    applyDefaultEffect()
+
+  if annyang
+    annyang.debug()
+    annyang.addCommands('photo': snapshotAndContinue)
+    annyang.setLanguage('en')
+    annyang.start()
+
+  window.picsCounter = new PicsCounter()
+
+class BlobImage
+  constructor: (blob, thumb) ->
+    @blob = blob
+    @thumb = thumb
+    @tooken_at = new Date()
+
+class PicsCounter
+  constructor: ->
+    @success = 0
+    @failure = 0
+  uploadImage: (image) ->
      fd = new FormData()
-     fd.append("image", blob)
-     fd.append("thumb", thumb_blob)
+     fd.append("image", image.blob)
+     fd.append("thumb", image.thumb_blob)
+     fd.append("tooken_at", image.tooken_at)
 
      if $('#use_as_base')[0].checked
        fd.append("use_as_base_image", true)
@@ -236,29 +266,27 @@ $(document).ready ->
        processData: false,
        contentType: false,
        success: (data) ->
-         $('.slideshow').append('&nbsp;<img class="image-thumb" src="data:image/png;base64'+thumb_blob+ '" data-content="' + data.url+ '" data-id="' + data.id +  '" />')
-         slideShowIt()
+         @success += 1
+         if @supportLocalStorage()
+           if list = @storage.getItem("failed_images_to_add") 
+             if list.length > 0
+               @uploadImage(list.shift())
+               @storage.setItem("failed_images_to_add", list)
+             else
+               @storage.removeItem("failed_images_to_add")
 
+       error: (xhr,status,data) ->
+         @failure += 1
+         if @supportLocalStorage()
+           if list = @storage.getItem("failed_images_to_add")
+             list.add image
+             @storage.setItem "failed_images_to_add", list
+           else
+             @storage.setItem "failed_images_to_add", [image]
 
-  $('video').on 'loadstart', (e) ->
-    $('#base-image').show()
-    $("#base-image").fadeTo(200, 0.6)
-
-  slideShowIt()
-
-  if typeof applyDefaultEffect isnt "undefined"
-    applyDefaultEffect()
-
-  if annyang
-    annyang.debug()
-    annyang.addCommands('photo': snapshotAndContinue)
-    annyang.setLanguage('en')
-    annyang.start()
-
-
-slideShowIt = ->
-  $('.slideshow').cycle fx:'fade', speed: ($(".slideshow > img").length / 24) * 1000, continuous:1, timeout:0, easeIn: 'linear', easeOut: 'linear'
-
+  storage: window['localStorage']
+  supportLocalStorage: ->
+    'localStorage' in window && @storage() !== null
 
 class Countdown
   constructor: (@target_id = "#timer", @start_time = 20000) ->

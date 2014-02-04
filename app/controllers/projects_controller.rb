@@ -88,7 +88,9 @@ class ProjectsController < ApplicationController
   def add_image
     @project = Project.where(url: params[:unique_url]).first
     project = Project.find@project.id 
-    image = project.images.create filename: "#{ project.images.count + 1 }.png"
+    image = project.images.build filename: "#{ project.images.count + 1 }.png"
+    image.tooken_at = params[:tooken_at]
+    image.save
     image_file = File.join(image.project.dir, image.filename)
     File.open(image_file, 'wb') do |f|
       f.write(decode_from_param(:image))

@@ -2,11 +2,6 @@
   <div class="control-group">
     <%= render :partial => 'image' %>
     <div class="container">
-      <div id="images-context" class="slideshow">
-        <% @project.images.each do |image| %>
-          <img class="image-thumb" src="<%= image.thumb_url%>" data-content="<%= image.url %>" data-id="<%= image.id %>" />
-        <% end %>
-      </div>
       <div id="timelapse"  class="timelapse-box">
         Take picture each <%= select_tag "take_picture_step", options_for_select(%w(1 2 3 4 5 10 15 20 30 45 60),20), style: "width: 60px;" %>
       <%= select_tag "take_picture_timeframe", options_for_select(%w(seconds minutes hours), 'seconds') , style: "width: 80px;"%>
