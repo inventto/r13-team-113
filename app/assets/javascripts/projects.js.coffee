@@ -179,7 +179,7 @@ $(document).ready ->
 
       $('img#thumbimage').attr 'src', thumb_blob
 
-      image = new BlobImage(blob, thumb)
+      image = new BlobImage(blob, thumb_blob)
       picsCounter.uploadImage image
 
       $('img#captured-image').show()
@@ -250,43 +250,62 @@ class PicsCounter
   constructor: ->
     @success = 0
     @failure = 0
+
   uploadImage: (image) ->
-     fd = new FormData()
-     fd.append("image", image.blob)
-     fd.append("thumb", image.thumb_blob)
-     fd.append("tooken_at", image.tooken_at)
+    picsCounter.lastImage = image
+    fd = new FormData()
+    fd.append("image", image.blob)
+    fd.append("thumb", image.thumb)
+    fd.append("tooken_at", image.tooken_at)
 
-     if $('#use_as_base')[0].checked
-       fd.append("use_as_base_image", true)
+    if $('#use_as_base')[0].checked
+      fd.append("use_as_base_image", true)
 
-     $.ajax
-       url: window.location + '/add_image',
-       data: fd,
-       type: 'POST',
-       processData: false,
-       contentType: false,
-       success: (data) ->
-         @success += 1
-         if @supportLocalStorage()
-           if list = @storage.getItem("failed_images_to_add") 
-             if list.length > 0
-               @uploadImage(list.shift())
-               @storage.setItem("failed_images_to_add", list)
-             else
-               @storage.removeItem("failed_images_to_add")
+    @uploadImageFromForm(fd)
 
-       error: (xhr,status,data) ->
-         @failure += 1
-         if @supportLocalStorage()
-           if list = @storage.getItem("failed_images_to_add")
-             list.add image
-             @storage.setItem "failed_images_to_add", list
-           else
-             @storage.setItem "failed_images_to_add", [image]
+  uploadImageFromForm: (form) ->
+    $.ajax
+      url: window.location + '/add_image'
+      data: form
+      type: 'POST'
+      processData: false
+      contentType: false
+      success: @successUpload
+      error: @errorUploading
 
-  storage: window['localStorage']
-  supportLocalStorage: ->
-    'localStorage' in window && @storage() !== null
+  errorUploading: (data) ->
+    picsCounter.failure += 1
+    picsCounter.updatePicsCounter()
+    if (storage = window['localStorage'])
+      if list = storage.getItem("failed_images_to_add")
+        list = JSON.parse(list)
+      else
+        list = []
+      list.push picsCounter.lastImage
+      storage.setItem "failed_images_to_add", JSON.stringify(list)
+
+  successUpload: (data) ->
+    picsCounter.success += 1
+    picsCounter.updatePicsCounter()
+    if (storage = window['localStorage'])
+      if list = storage.getItem("failed_images_to_add") 
+        list = JSON.parse(list)
+        if list.length > 0
+          picsCounter.uploadImage(list.shift()) # recursive calls :)
+          picsCounter.failure -= 1
+          storage.setItem("failed_images_to_add", JSON.stringify(list))
+        else
+          storage.removeItem("failed_images_to_add")
+          picsCounter.failure = 0
+
+  updatePicsCounter: ->
+    html = ""
+    if picsCounter.success > 0
+      html += "<span class='badge positive'>#{picsCounter.success}</span>"
+    if picsCounter.failure > 0
+      html += "<span class='badge negative'>#{picsCounter.failure}</span>"
+    console.log("updatePicsCounter", picsCounter, html)
+    $("#pics_counter").html(html)
 
 class Countdown
   constructor: (@target_id = "#timer", @start_time = 20000) ->
