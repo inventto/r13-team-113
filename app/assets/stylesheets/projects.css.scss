@@ -2,10 +2,17 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.timelapse-box {
+#timelapse {
   margin-bottom:  5px;
   margin-left: 35%;
   border-color: gray 1px dotted;
+}
 
-
+.positive {
+  color:green;
+  font-wheigth: bold;
+}
+.negative {
+  font-size: 80%;
+  color: red;
 }

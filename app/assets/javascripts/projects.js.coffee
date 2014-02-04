@@ -179,7 +179,8 @@ $(document).ready ->
 
       $('img#thumbimage').attr 'src', thumb_blob
 
-      uploadImageFromBlob blob, thumb_blob
+      image = new BlobImage(blob, thumb_blob)
+      picsCounter.uploadImage image
 
       $('img#captured-image').show()
       $(video).hide()
@@ -221,30 +222,12 @@ $(document).ready ->
   onFailSoHard = -> {}
   navigator.getUserMedia video: true, sourceStream, onFailSoHard
 
-  uploadImageFromBlob = (blob, thumb_blob) ->
-     fd = new FormData()
-     fd.append("image", blob)
-     fd.append("thumb", thumb_blob)
-
-     if $('#use_as_base')[0].checked
-       fd.append("use_as_base_image", true)
-
-     $.ajax
-       url: window.location + '/add_image',
-       data: fd,
-       type: 'POST',
-       processData: false,
-       contentType: false,
-       success: (data) ->
-         $('.slideshow').append('&nbsp;<img class="image-thumb" src="data:image/png;base64'+thumb_blob+ '" data-content="' + data.url+ '" data-id="' + data.id +  '" />')
-         slideShowIt()
 
 
   $('video').on 'loadstart', (e) ->
     $('#base-image').show()
     $("#base-image").fadeTo(200, 0.6)
 
-  slideShowIt()
 
   if typeof applyDefaultEffect isnt "undefined"
     applyDefaultEffect()
@@ -255,10 +238,74 @@ $(document).ready ->
     annyang.setLanguage('en')
     annyang.start()
 
+  window.picsCounter = new PicsCounter()
 
-slideShowIt = ->
-  $('.slideshow').cycle fx:'fade', speed: ($(".slideshow > img").length / 24) * 1000, continuous:1, timeout:0, easeIn: 'linear', easeOut: 'linear'
+class BlobImage
+  constructor: (blob, thumb) ->
+    @blob = blob
+    @thumb = thumb
+    @tooken_at = new Date()
 
+class PicsCounter
+  constructor: ->
+    @success = 0
+    @failure = 0
+
+  uploadImage: (image) ->
+    picsCounter.lastImage = image
+    fd = new FormData()
+    fd.append("image", image.blob)
+    fd.append("thumb", image.thumb)
+    fd.append("tooken_at", image.tooken_at)
+
+    if $('#use_as_base')[0].checked
+      fd.append("use_as_base_image", true)
+
+    @uploadImageFromForm(fd)
+
+  uploadImageFromForm: (form) ->
+    $.ajax
+      url: window.location + '/add_image'
+      data: form
+      type: 'POST'
+      processData: false
+      contentType: false
+      success: @successUpload
+      error: @errorUploading
+
+  errorUploading: (data) ->
+    picsCounter.failure += 1
+    picsCounter.updatePicsCounter()
+    if (storage = window['localStorage'])
+      if list = storage.getItem("failed_images_to_add")
+        list = JSON.parse(list)
+      else
+        list = []
+      list.push picsCounter.lastImage
+      storage.setItem "failed_images_to_add", JSON.stringify(list)
+
+  successUpload: (data) ->
+    picsCounter.success += 1
+    picsCounter.updatePicsCounter()
+    if (storage = window['localStorage'])
+      if list = storage.getItem("failed_images_to_add") 
+        list = JSON.parse(list)
+        if list.length > 0
+          picsCounter.uploadImage(list.shift()) # recursive calls :)
+          picsCounter.failure -= 1
+          storage.setItem("failed_images_to_add", JSON.stringify(list))
+        else
+          storage.removeItem("failed_images_to_add")
+          picsCounter.failure = 0
+
+  updatePicsCounter: ->
+    html = ""
+    if picsCounter.success > 0
+      html += "<span class='badge positive'>#{picsCounter.success}</span>"
+    if picsCounter.failure > 0
+      html += "<span class='badge negative'>#{picsCounter.failure}</span>"
+    console.log("updatePicsCounter", picsCounter, html)
+    $("#pics_counter").html(html)
 
 class Countdown
   constructor: (@target_id = "#timer", @start_time = 20000) ->

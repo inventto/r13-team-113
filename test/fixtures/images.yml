@@ -1,9 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  project_id: 
-  path: MyString
+  project_id: 1
+  filename: public/system/uploads/1.png
+  tooken_at: 2013-10-20 20:20:20
 
-two:
-  project_id: 
-  path: MyString

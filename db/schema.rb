@@ -11,13 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131020133624) do
+ActiveRecord::Schema.define(version: 20140204121634) do
 
   create_table "images", force: true do |t|
     t.integer  "project_id"
     t.string   "filename"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "path_file_name"
+    t.string   "path_content_type"
+    t.integer  "path_file_size"
+    t.datetime "path_updated_at"
+    t.datetime "tooken_at"
   end
 
   add_index "images", ["project_id"], name: "index_images_on_project_id"
