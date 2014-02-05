@@ -91,9 +91,11 @@ class ProjectsController < ApplicationController
     image.tooken_at = Time.at(params[:tooken_at].to_f / 1000)
     image.save
     image_file = File.join(project.dir, image.filename)
+    now = Time.now
     File.open(image_file, 'wb') do |f|
       f.write(decode_from_param(:image))
     end
+    warn "spend #{Time.now - now} to write the image"
     if params[:use_as_base_image] 
       project.imagebase = image
       project.save
