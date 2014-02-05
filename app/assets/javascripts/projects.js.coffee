@@ -240,8 +240,8 @@ class PicsCounter
       fd.append("use_as_base_image", true)
 
     key = image.tookenAt
-    storage.setAttachment('imagesToUpload', key, JSON.stringify(image) )
     @uploadImageFromForm(fd)
+    storage.setAttachment('imagesToUpload', key, JSON.stringify(image) )
 
   uploadImageFromForm: (form) ->
     $.ajax
