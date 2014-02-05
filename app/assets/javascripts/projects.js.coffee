@@ -263,15 +263,12 @@ class PicsCounter
     console.log("storage.rmAttachment('imagesToUpload',", ""+data.ok)
     storage.rmAttachment("imagesToUpload", ""+data.ok).then ->
       storage.ls("imagesToUpload").then (list) ->
-        console.log('find images to upload? ', list)
         if list.length > 0 and key = list[0]
           storage.getAttachment("imagesToUpload", key).then (imageFile) ->
-            console.log("loaded.. ", imageFile)
             read = new FileReader()
             read.readAsBinaryString(imageFile)
             read.onloadend = ->
               image  = JSON.parse( read.result)
-              console.log("JSON image = ", image)
               picsCounter.failure -= 1
               picsCounter.uploadImage(image) # recursive calls :)
               storage.rmAttachment("imagesToUpload", key).then ->
