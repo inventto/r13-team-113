@@ -86,25 +86,20 @@ class ProjectsController < ApplicationController
   end
 
   def add_image
-    @project = Project.where(url: params[:unique_url]).first
-    project = Project.find@project.id 
-    image = project.images.build filename: "#{ project.images.count + 1 }.png"
-    image.tooken_at = params[:tooken_at]
+    project = Project.where(url: params[:unique_url]).first
+    image = project.images.build filename: "#{ @project.images.count + 1 }.png"
+    image.tooken_at = Time.at(params[:tooken_at].to_f / 1000)
     image.save
-    image_file = File.join(image.project.dir, image.filename)
+    image_file = File.join(project.dir, image.filename)
     File.open(image_file, 'wb') do |f|
       f.write(decode_from_param(:image))
-    end
-    thumb_file = File.join(image.project.thumbs_dir, image.filename)
-    File.open(thumb_file, 'wb') do |f|
-      f.write(decode_from_param(:thumb))
     end
     if params[:use_as_base_image] 
       project.imagebase = image
       project.save
     end
     respond_to do |format|
-      format.json { render json: image.to_json(:methods => [:url, :thumb_url]) }
+      format.json { render json: {ok: params[:tooken_at] } }
     end
   end
   def export

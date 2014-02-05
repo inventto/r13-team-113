@@ -3,6 +3,9 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $(document).ready ->
   Pixastic.init()
+  window.storage = new LargeLocalStorage(size: 50 * 1024 * 1024, name: window.location.pathname.substring(4))
+  storage.initialized.then ->
+    console.log("oK. ALLOWED SPACE is #{storage.getCapacity()}")
 
   $("div[withEffect]").on 'click', (e) ->
     base_image = $("#base-image")[0]
@@ -121,19 +124,6 @@ $(document).ready ->
        }
 
 
-  load_thumb_effects = ->
-    # FIXME: Don't show the captured image
-    #thumb_canvas = $('#capture canvas.thumb-camera')[0]
-    #thumb_blob = thumb_canvas.toDataURL('image/webp')
-    #$('#effects img').attr 'src', thumb_blob
-    #$('#effects canvas').each (i, e) ->
-    #  _ctx = e.getContext('2d')
-    #  _ctx.clearRect(4,4,24,24)
-    #  _img = new Image()
-    #  _img.src = thumb_blob
-    #  _ctx.drawImage(_img,-32,-32,thumbSize,thumbSize)
-    #Pixastic.init()
-
   active_context = (context) ->
     $('#context-container > div').hide(100)
     $('#'+context).show(100)
@@ -144,47 +134,35 @@ $(document).ready ->
   video = $('#capture video')[0]
   canvas = $('#capture canvas.camera')[0]
   if thumb_canvas = $('#capture canvas.thumb-camera')[0]
-    thumbSize = 128
-    thumb_canvas.width = thumbSize
-    thumb_canvas.height = thumbSize
     canvas.width = 500
     canvas.height = 500
     ctx = canvas.getContext('2d')
-    thumb_ctx = thumb_canvas.getContext('2d')
     localMediaStream = null
 
   snapshotAndContinue = ->
     snapshot()
     $('img#captured-image').hide()
-    $('img#thumbimage').hide()
     $(video).show()
 
   snapshot = ->
     if (localMediaStream)
       diffH = video.clientHeight - canvas.height
       diffW = video.clientWidth - canvas.width
-      diffHT = diffH * thumbSize / canvas.height
-      diffWT = diffW * thumbSize / canvas.width
-      thumbWidth = thumbSize * video.clientWidth / video.clientHeight
 
       ctx.drawImage(video, -diffW / 2, -diffH / 2, video.clientWidth, video.clientHeight)
-      thumb_ctx.drawImage(video, -diffWT / 2, -diffHT / 2, thumbWidth, thumbSize)
       blob =  canvas.toDataURL('image/png')
-      thumb_blob = thumb_canvas.toDataURL('image/png')
       $('img#captured-image').attr 'src', blob
 
       if $('#use_as_base')[0].checked or pictureDefaultYet()
         $('img#base-image').attr 'src', blob
         $('img#base-image').show()
 
-      $('img#thumbimage').attr 'src', thumb_blob
 
-      image = new BlobImage(blob, thumb_blob)
+      image = new BlobImage(blob)
       picsCounter.uploadImage image
 
       $('img#captured-image').show()
       $(video).hide()
-      load_thumb_effects()
       $('body').css({opacity: 0})
       $('body').animate({opacity: 1}, 300 )
 
@@ -244,7 +222,8 @@ class BlobImage
   constructor: (blob, thumb) ->
     @blob = blob
     @thumb = thumb
-    @tooken_at = new Date()
+    @tookenAt = new Date().getTime()
+
 
 class PicsCounter
   constructor: ->
@@ -252,15 +231,16 @@ class PicsCounter
     @failure = 0
 
   uploadImage: (image) ->
-    picsCounter.lastImage = image
+    console.log("uploadImage", image)
     fd = new FormData()
     fd.append("image", image.blob)
-    fd.append("thumb", image.thumb)
-    fd.append("tooken_at", image.tooken_at)
+    fd.append("tooken_at", image.tookenAt)
 
     if $('#use_as_base')[0].checked
       fd.append("use_as_base_image", true)
 
+    key = image.tookenAt
+    storage.setAttachment('imagesToUpload', key, JSON.stringify(image) )
     @uploadImageFromForm(fd)
 
   uploadImageFromForm: (form) ->
@@ -276,26 +256,27 @@ class PicsCounter
   errorUploading: (data) ->
     picsCounter.failure += 1
     picsCounter.updatePicsCounter()
-    if (storage = window['localStorage'])
-      if list = storage.getItem("failed_images_to_add")
-        list = JSON.parse(list)
-      else
-        list = []
-      list.push picsCounter.lastImage
-      storage.setItem "failed_images_to_add", JSON.stringify(list)
 
   successUpload: (data) ->
     picsCounter.success += 1
     picsCounter.updatePicsCounter()
-    if (storage = window['localStorage'])
-      if list = storage.getItem("failed_images_to_add") 
-        list = JSON.parse(list)
-        if list.length > 0
-          picsCounter.uploadImage(list.shift()) # recursive calls :)
-          picsCounter.failure -= 1
-          storage.setItem("failed_images_to_add", JSON.stringify(list))
+    console.log("storage.rmAttachment('imagesToUpload',", ""+data.ok)
+    storage.rmAttachment("imagesToUpload", ""+data.ok).then ->
+      storage.ls("imagesToUpload").then (list) ->
+        console.log('find images to upload? ', list)
+        if list.length > 0 and key = list[0]
+          storage.getAttachment("imagesToUpload", key).then (imageFile) ->
+            console.log("loaded.. ", imageFile)
+            read = new FileReader()
+            read.readAsBinaryString(imageFile)
+            read.onloadend = ->
+              image  = JSON.parse( read.result)
+              console.log("JSON image = ", image)
+              picsCounter.failure -= 1
+              picsCounter.uploadImage(image) # recursive calls :)
+              storage.rmAttachment("imagesToUpload", key).then ->
+                console.log("ok", key, "removed")
         else
-          storage.removeItem("failed_images_to_add")
           picsCounter.failure = 0
 
   updatePicsCounter: ->
@@ -306,6 +287,7 @@ class PicsCounter
       html += "<span class='badge negative'>#{picsCounter.failure}</span>"
     console.log("updatePicsCounter", picsCounter, html)
     $("#pics_counter").html(html)
+
 
 class Countdown
   constructor: (@target_id = "#timer", @start_time = 20000) ->
