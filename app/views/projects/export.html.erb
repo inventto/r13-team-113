@@ -1,20 +1,15 @@
 <div class="container">
-<div class="content">
-<h1>Preview video!</h1>
-<div id="slideshow">
-  <% @project.images.each do |image|%>
-    <%= image_tag image.url %>
-  <% end %>
-</div>
+  <div class="content">
+    <% if File.exists? @project.video_output_path %>
+      <h1><%= t('your_video_is_here')%></h1>
 
-<% if File.exists? @project.video_output_path %>
-<h1>Exporting video!</h1>
+      <p>Access the link with your video <%= link_to "here", @project.video_url %></p>
 
-<p>Access the link with your video <%= link_to "here", @project.video_url %></p>
+      <p>Or wait to watch here: </p>
 
-<p>Or wait to watch here: </p>
-
-<video src="<%= @project.video_url %>" id="output_video"></video>
-<% end %>
-</div>
+      <video src="<%= @project.video_url %>" id="output_video"></video>
+    <% else %>
+      <h1><%= t 'exporting' %></h1>
+    <% end %>
+  </div>
 </div>

@@ -6,9 +6,9 @@ class ImageTest < ActiveSupport::TestCase
     @project = projects :one
   end
   test "shouldnt allow image without project" do
-     assert ! Image.create(path: "/a/b").valid?
+     assert ! Image.create(filename: "/a/b").valid?
   end
-  test "shouldnt allow create two image references to the same path" do
-     assert ! Image.create(path: "/a/b", project: @project).valid?
+  test "shouldnt allow create without filename" do
+     assert ! Image.create(project: @project).valid?
   end
 end

@@ -26,4 +26,7 @@
 //= require pixastic/actions/solarize
 //= require pixastic/actions/transparent
 //= require turbolinks
+//= require annyang.min
+//= require q.min
+//= require LargeLocalStorage
 //= require_tree .
