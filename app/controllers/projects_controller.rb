@@ -11,11 +11,14 @@ class ProjectsController < ApplicationController
 
   end
   def decide
-    if cookies[:unique_url]
-      redirect_to action: :edit, unique_url: cookies[:unique_url]
-    else
-      redirect_to new_project_path
+    if cookies[:unique_url] 
+      project = Project.where(url: cookies[:unique_url]).first
+      if project 
+        redirect_to action: :edit, unique_url: cookies[:unique_url]
+        return 
+      end
     end
+    redirect_to new_project_path
   end
 
   # GET /projects/1
@@ -89,7 +92,7 @@ class ProjectsController < ApplicationController
       format.html { head :no_content }
       format.json { head :no_content }
     end
-  end
+end
 
   # POST /projects/1/add_image
   def add_image

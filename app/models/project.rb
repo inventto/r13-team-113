@@ -36,11 +36,11 @@ class Project < ActiveRecord::Base
     @video_output_path ||= File.join(dir, "#{url}.mp4")
   end
   def render_video!
-    if Rails.env.production? 
-      Resque.enqueue(CreateVideo, self.id)
-    else
+   # if Rails.env.production? 
+   #   Resque.enqueue(CreateVideo, self.id)
+    #else
       CreateVideo.perform(self.id)
-    end
+   # end
     video_output_path
   end
 end
